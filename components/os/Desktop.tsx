@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { BootSplash } from "./BootSplash";
 import { DesktopIcons } from "./DesktopIcons";
 import { Dock } from "./Dock";
+import { GuideFalcon } from "./GuideFalcon";
 import { MenuBar } from "./MenuBar";
 import { StickyNote } from "./StickyNote";
 import { Wallpaper } from "./Wallpaper";
@@ -88,6 +89,7 @@ function DesktopInner() {
                 </OsWindow>
               ))}
             </AnimatePresence>
+            <GuideFalcon />
             <Dock />
           </>
         )}
