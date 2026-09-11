@@ -44,3 +44,6 @@ next-env.d.ts
 /.playwright
 /out
 .api-backup-pages
+
+dynamogic-*.tar.gz
+*.tar.gz
