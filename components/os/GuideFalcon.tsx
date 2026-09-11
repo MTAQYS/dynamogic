@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Logo } from "../Logo";
 import { usePrefersReducedMotion } from "../motion/usePrefersReducedMotion";
 import { useWindows } from "./WindowContext";
+import { PREF_DND, readPref } from "./osPrefs";
 
 const MISSION_KEY = "dynamogic-os-mission";
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -65,6 +66,14 @@ export function GuideFalcon() {
   const [hydrated, setHydrated] = useState(false);
   const [step, setStep] = useState<StepId | "skipped">("open_demo");
   const [panelOpen, setPanelOpen] = useState(true);
+  const [dnd, setDnd] = useState(false);
+
+  useEffect(() => {
+    const sync = () => setDnd(readPref(PREF_DND));
+    sync();
+    window.addEventListener("dynamogic-os-prefs", sync);
+    return () => window.removeEventListener("dynamogic-os-prefs", sync);
+  }, []);
 
   useEffect(() => {
     const initial = readMission();
@@ -117,6 +126,7 @@ export function GuideFalcon() {
 
   if (isMobile && focusedId) return null;
   if (!hydrated) return null;
+  if (dnd) return null;
   if (step === "skipped") return null;
   // First-run only: after dismiss / hydrate with done, hide falcon entirely
   if (step === "done" && !panelOpen) return null;

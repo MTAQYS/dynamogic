@@ -84,6 +84,18 @@ export function AppIcon({ id, size = 22, className = "" }: Props) {
       );
     case "about":
       return <Logo variant="mark" size={s} square className={className} />;
+    case "signin":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="9" r="3.2" stroke={stroke} strokeWidth={sw} />
+          <path
+            d="M5 19c1.5-3.2 4-4.8 7-4.8s5.5 1.6 7 4.8"
+            stroke={stroke}
+            strokeWidth={sw}
+            strokeLinecap="round"
+          />
+        </svg>
+      );
     default:
       return null;
   }

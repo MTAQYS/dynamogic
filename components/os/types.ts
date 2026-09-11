@@ -5,7 +5,8 @@ export type AppId =
   | "pricing"
   | "faq"
   | "about"
-  | "how";
+  | "how"
+  | "signin";
 
 export type WindowState = {
   id: AppId;
@@ -67,6 +68,11 @@ export const APP_META: Record<
     title: "How it works.app",
     label: "How it works",
     defaultSize: { w: 480, h: 400 },
+  },
+  signin: {
+    title: "Sign In.app",
+    label: "Sign in",
+    defaultSize: { w: 420, h: 440 },
   },
 };
 

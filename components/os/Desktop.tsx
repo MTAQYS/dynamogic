@@ -18,6 +18,7 @@ import { FaqApp } from "./apps/FaqApp";
 import { HowApp } from "./apps/HowApp";
 import { McpTerminalApp } from "./apps/McpTerminalApp";
 import { PricingApp } from "./apps/PricingApp";
+import { SignInApp } from "./apps/SignInApp";
 import type { AppId } from "./types";
 
 function AppContent({ id }: { id: AppId }) {
@@ -36,6 +37,8 @@ function AppContent({ id }: { id: AppId }) {
       return <HowApp />;
     case "about":
       return <AboutApp />;
+    case "signin":
+      return <SignInApp />;
     default:
       return null;
   }

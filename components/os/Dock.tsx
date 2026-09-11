@@ -6,6 +6,7 @@ import { usePrefersReducedMotion } from "../motion/usePrefersReducedMotion";
 import { AppIcon } from "./AppIcon";
 import { useWindows } from "./WindowContext";
 import { APP_META, type AppId } from "./types";
+import { PREF_COMPACT_DOCK, readPref } from "./osPrefs";
 
 const DOCK_APPS: AppId[] = [
   "demo",
@@ -20,7 +21,8 @@ const DOCK_APPS: AppId[] = [
 const MOBILE_PRIMARY: AppId[] = ["demo", "brand", "mcp", "pricing", "faq"];
 const MOBILE_MORE: AppId[] = ["how", "about"];
 
-const BASE = 48;
+const BASE_FULL = 48;
+const BASE_COMPACT = 40;
 const MAX_EXTRA = 12;
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -32,6 +34,16 @@ export function Dock() {
   const mouseXRef = useRef<number | null>(null);
   const rafRef = useRef<number | null>(null);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [compact, setCompact] = useState(false);
+
+  useEffect(() => {
+    const sync = () => setCompact(readPref(PREF_COMPACT_DOCK));
+    sync();
+    window.addEventListener("dynamogic-os-prefs", sync);
+    return () => window.removeEventListener("dynamogic-os-prefs", sync);
+  }, []);
+
+  const BASE = compact ? BASE_COMPACT : BASE_FULL;
 
   const applyMagnify = useCallback(() => {
     rafRef.current = null;
@@ -48,7 +60,7 @@ export function Dock() {
       el.style.transform = `scale(${scale})`;
       el.style.transformOrigin = "bottom center";
     });
-  }, [reduced]);
+  }, [reduced, BASE]);
 
   const scheduleMagnify = useCallback(() => {
     if (rafRef.current != null) return;
