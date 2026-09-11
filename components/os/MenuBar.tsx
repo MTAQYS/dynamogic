@@ -43,22 +43,26 @@ export function MenuBar() {
   }
 
   return (
-    <header className="relative z-[200] flex h-8 shrink-0 items-center justify-between border-b border-border/60 bg-bg-paper/70 px-3 text-[12px] backdrop-blur-xl">
-      <nav className="flex items-center gap-1" aria-label="Menu bar">
+    <header className="relative z-[200] flex h-7 shrink-0 items-center justify-between border-b border-white/40 bg-bg-paper/55 px-3 text-[12px] shadow-[0_1px_0_rgba(42,42,40,0.04)] backdrop-blur-2xl backdrop-saturate-150">
+      <nav className="flex items-center gap-0.5" aria-label="Menu bar">
         <button
           type="button"
           onClick={(e) => toggle("dynamogic", e)}
-          className="flex items-center gap-1.5 rounded px-2 py-0.5 font-semibold text-fg hover:bg-fg/5"
+          className={`flex items-center gap-1.5 rounded-md px-1.5 py-0.5 font-semibold text-fg transition-colors hover:bg-fg/[0.05] ${
+            menuOpen === "dynamogic" ? "bg-fg/[0.06]" : ""
+          }`}
         >
-          <Logo className="!gap-1.5 [&_span]:!text-[13px] [&_svg]:h-3.5 [&_svg]:w-3.5" />
+          <Logo size={12} className="!gap-1.5 [&_span]:!font-semibold" />
         </button>
         {(["File", "Window", "Help"] as const).map((label) => (
           <button
             key={label}
             type="button"
             onClick={(e) => toggle(label.toLowerCase(), e)}
-            className={`rounded px-2 py-0.5 text-fg/80 hover:bg-fg/5 ${
-              menuOpen === label.toLowerCase() ? "bg-fg/8" : ""
+            className={`rounded-md px-2 py-0.5 text-[12px] font-medium tracking-tight transition-colors hover:bg-fg/[0.05] ${
+              menuOpen === label.toLowerCase()
+                ? "bg-fg/[0.06] text-fg"
+                : "text-fg/65"
             }`}
           >
             {label}
@@ -66,11 +70,14 @@ export function MenuBar() {
         ))}
       </nav>
 
-      <div className="flex items-center gap-3 text-fg-muted">
-        <span className="hidden font-mono text-[11px] sm:inline">
+      <div className="flex items-center gap-3">
+        <span className="hidden text-[10px] font-medium tracking-[0.04em] text-fg/40 sm:inline">
           Dynamogic OS
         </span>
-        <time className="tabular-nums text-fg" dateTime={new Date().toISOString()}>
+        <time
+          className="text-[12px] font-medium tabular-nums tracking-tight text-fg/85"
+          dateTime={new Date().toISOString()}
+        >
           {time}
         </time>
       </div>
@@ -132,7 +139,7 @@ function Dropdown({
 }) {
   return (
     <div
-      className="absolute top-8 z-[210] min-w-[180px] overflow-hidden rounded-lg border border-border bg-bg-paper/95 py-1 shadow-paper backdrop-blur-xl"
+      className="absolute top-7 z-[210] min-w-[188px] overflow-hidden rounded-xl border border-border/80 bg-bg-paper/92 py-1.5 shadow-[0_12px_40px_rgba(42,42,40,0.12),0_0_0_0.5px_rgba(42,42,40,0.06)] backdrop-blur-2xl"
       style={{ left }}
       onClick={(e) => e.stopPropagation()}
     >
@@ -155,7 +162,7 @@ function MenuItem({
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className="flex w-full px-3 py-1.5 text-left text-[12px] text-fg hover:bg-fg/5 disabled:opacity-40"
+      className="mx-1 flex w-[calc(100%-0.5rem)] rounded-lg px-2.5 py-1.5 text-left text-[12px] font-medium tracking-tight text-fg transition-colors hover:bg-fg/[0.05] disabled:opacity-35"
     >
       {children}
     </button>
@@ -163,5 +170,5 @@ function MenuItem({
 }
 
 function Divider() {
-  return <div className="my-1 h-px bg-border" />;
+  return <div className="my-1.5 h-px bg-border/80" />;
 }

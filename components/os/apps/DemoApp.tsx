@@ -131,9 +131,11 @@ export function DemoApp() {
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-bg">
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-bg-muted/60 px-4 py-2">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/70 bg-bg-muted/50 px-5 py-2.5">
         <div>
-          <p className="text-sm font-semibold text-fg">Live render studio</p>
+          <p className="text-[13px] font-semibold tracking-tight text-fg">
+            Live render studio
+          </p>
           <p className="font-mono text-[10px] text-fg-muted">
             bay · demo · fair-use
           </p>
@@ -141,48 +143,52 @@ export function DemoApp() {
         <button
           type="button"
           onClick={() => openApp("brand")}
-          className="rounded-md border border-border bg-bg-paper px-2.5 py-1 text-[11px] font-medium text-fg-muted hover:text-fg"
+          className="rounded-lg border border-border/80 bg-bg-paper px-3 py-1.5 text-[11px] font-medium text-fg/70 transition-colors hover:border-border-strong hover:text-fg"
         >
           Edit Brand Kit →
         </button>
       </div>
 
       <div className="grid min-h-0 flex-1 gap-0 lg:grid-cols-2">
-        <div className="flex min-h-0 flex-col gap-3 overflow-auto border-b border-border p-4 lg:border-b-0 lg:border-r">
+        <div className="flex min-h-0 flex-col gap-3.5 overflow-auto border-b border-border/70 p-5 lg:border-b-0 lg:border-r">
           <div>
-            <label htmlFor="os-content" className="text-xs font-semibold text-fg">
+            <label htmlFor="os-content" className="text-[11px] font-semibold tracking-tight text-fg">
               Content
             </label>
             <textarea
               id="os-content"
-              className="prose-demo mt-1.5 h-36 w-full resize-y rounded-md border border-border bg-bg-paper p-3 text-fg focus:border-border-strong"
+              className="prose-demo mt-1.5 h-36 w-full resize-y rounded-xl border border-border/80 bg-bg-paper p-3.5 text-fg shadow-soft focus:border-border-strong"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               spellCheck={false}
             />
           </div>
 
-          <div className="rounded-md border border-border bg-bg-paper p-3">
+          <div className="rounded-xl border border-border/80 bg-bg-paper p-3.5 shadow-soft">
             <div className="flex items-center justify-between gap-2">
-              <p className="text-xs font-semibold text-fg">Active brand kit</p>
+              <p className="text-[11px] font-semibold tracking-tight text-fg">
+                Active brand kit
+              </p>
               <span
                 className="h-3 w-3 rounded-full border border-border"
                 style={{ background: brand.primary_color }}
                 title="Brand color (PDF only)"
               />
             </div>
-            <p className="mt-1 text-sm font-medium text-fg">{brand.name}</p>
+            <p className="mt-1 text-sm font-medium tracking-tight text-fg">
+              {brand.name}
+            </p>
             <p className="font-mono text-[10px] text-fg-muted">
               {brand.primary_color} · {brand.accent_style}
             </p>
-            <div className="mt-2 grid gap-2 sm:grid-cols-2">
+            <div className="mt-2.5 grid gap-2.5 sm:grid-cols-2">
               <div>
                 <label htmlFor="os-name" className="text-[10px] text-fg-muted">
                   Name
                 </label>
                 <input
                   id="os-name"
-                  className="mt-0.5 h-8 w-full rounded border border-border bg-bg px-2 text-sm"
+                  className="mt-0.5 h-8 w-full rounded-lg border border-border/80 bg-bg px-2.5 text-sm"
                   value={brand.name}
                   onChange={(e) =>
                     setBrand((b) => ({ ...b, name: e.target.value }))
@@ -204,11 +210,11 @@ export function DemoApp() {
                         primary_color: e.target.value,
                       }))
                     }
-                    className="h-8 w-9 cursor-pointer rounded border border-border bg-bg p-0.5"
+                    className="h-8 w-9 cursor-pointer rounded-lg border border-border/80 bg-bg p-0.5"
                   />
                   <input
                     aria-label="Primary color hex"
-                    className="h-8 w-full rounded border border-border bg-bg px-2 font-mono text-xs"
+                    className="h-8 w-full rounded-lg border border-border/80 bg-bg px-2 font-mono text-xs"
                     value={brand.primary_color}
                     onChange={(e) =>
                       setBrand((b) => ({
@@ -220,7 +226,7 @@ export function DemoApp() {
                 </div>
               </div>
             </div>
-            <div className="mt-2">
+            <div className="mt-2.5">
               <label htmlFor="os-logo" className="text-[10px] text-fg-muted">
                 Optional logo
               </label>
@@ -228,19 +234,19 @@ export function DemoApp() {
                 id="os-logo"
                 type="file"
                 accept="image/png,image/jpeg,image/svg+xml,image/webp"
-                className="mt-0.5 block w-full text-[11px] text-fg-muted file:mr-2 file:rounded file:border file:border-border file:bg-bg file:px-2 file:py-1 file:text-[10px]"
+                className="mt-0.5 block w-full text-[11px] text-fg-muted file:mr-2 file:rounded-lg file:border file:border-border file:bg-bg file:px-2.5 file:py-1 file:text-[10px]"
                 onChange={(e) => onLogoChange(e.target.files?.[0] || null)}
               />
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             <button
               type="button"
               onClick={generate}
               disabled={status === "busy"}
               aria-busy={status === "busy"}
-              className="btn-soft inline-flex h-10 items-center rounded-md px-5 text-sm font-bold disabled:opacity-60"
+              className="btn-soft inline-flex h-10 items-center rounded-xl px-5 text-[13px] font-semibold tracking-tight disabled:opacity-60"
             >
               {status === "busy" ? "Generating…" : "Generate PDF"}
             </button>
@@ -268,7 +274,7 @@ export function DemoApp() {
             <a
               href={pdfUrl}
               download="dynamogic-demo.pdf"
-              className="inline-flex h-9 w-fit items-center rounded-md border border-border-strong px-4 text-sm font-semibold"
+              className="inline-flex h-9 w-fit items-center rounded-xl border border-border-strong px-4 text-[13px] font-semibold tracking-tight transition-colors hover:bg-fg hover:text-invert-fg"
             >
               Download
             </a>
@@ -281,7 +287,7 @@ export function DemoApp() {
         </div>
 
         <div className="flex min-h-[280px] flex-col bg-bg-paper">
-          <div className="flex items-center justify-between border-b border-border px-4 py-2">
+          <div className="flex items-center justify-between border-b border-border/70 px-5 py-2.5">
             <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-fg-muted">
               pdf preview
             </p>
@@ -301,11 +307,11 @@ export function DemoApp() {
               />
             </object>
           ) : (
-            <div className="flex flex-1 flex-col items-center justify-center p-6">
+            <div className="app-empty m-5">
               <div
-                className="w-full max-w-xs rounded-md border border-border bg-bg p-5 shadow-soft"
+                className="w-full max-w-[240px] rounded-xl border border-border bg-bg-paper p-5 text-left shadow-soft"
                 style={{
-                  borderLeftWidth: 4,
+                  borderLeftWidth: 3,
                   borderLeftColor: brand.primary_color,
                 }}
               >
@@ -315,11 +321,12 @@ export function DemoApp() {
                 >
                   {brand.name.toUpperCase()}
                 </p>
-                <p className="mt-2 text-base font-extrabold tracking-tight text-fg">
-                  Preview frame
+                <p className="mt-2 text-[15px] font-semibold tracking-tight text-fg">
+                  Ready when you are
                 </p>
                 <p className="mt-2 text-[11px] leading-relaxed text-fg-muted">
-                  Brand color appears only inside the PDF — never on OS chrome.
+                  Generate a PDF to preview here. Brand color stays inside the
+                  document — never on OS chrome.
                 </p>
               </div>
             </div>

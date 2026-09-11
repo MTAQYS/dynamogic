@@ -70,20 +70,47 @@ body {
 }
 
 .fog-layer {
-  background: radial-gradient(
-    ellipse 80% 60% at 50% 45%,
-    transparent 0%,
-    rgba(42, 42, 40, 0.02) 55%,
-    rgba(42, 42, 40, 0.09) 100%
-  );
+  background:
+    radial-gradient(
+      ellipse 85% 65% at 50% 40%,
+      transparent 0%,
+      rgba(42, 42, 40, 0.015) 50%,
+      rgba(42, 42, 40, 0.07) 100%
+    ),
+    radial-gradient(
+      ellipse 50% 40% at 80% 90%,
+      rgba(42, 42, 40, 0.04) 0%,
+      transparent 70%
+    );
 }
 
-/* Soft button hover — gentler than pure black flash */
+/* Soft charcoal CTA — Linear/Apple feel */
 .btn-soft {
-  @apply bg-fg text-invert-fg transition-colors duration-200;
+  @apply bg-[#2A2A28] text-invert-fg transition-all duration-200;
+  box-shadow: 0 1px 2px rgba(42, 42, 40, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 .btn-soft:hover {
-  background-color: #333330;
+  background-color: #3a3a36;
+}
+.btn-soft:active {
+  background-color: #222220;
+  transform: translateY(0.5px);
+}
+
+.app-pad {
+  @apply p-5 sm:p-6;
+}
+
+.app-kicker {
+  @apply font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-fg-muted;
+}
+
+.app-title {
+  @apply mt-1.5 text-[1.25rem] font-semibold tracking-tight text-fg;
+}
+
+.app-empty {
+  @apply flex flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-border/80 bg-bg-muted/40 px-6 py-10 text-center;
 }
 
 @media (prefers-reduced-motion: reduce) {

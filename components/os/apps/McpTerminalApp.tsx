@@ -40,28 +40,28 @@ export function McpTerminalApp() {
   }, [reduced, replay]);
 
   return (
-    <div className="flex h-full flex-col bg-invert-bg text-invert-fg">
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
-        <span className="font-mono text-[11px] text-invert-fg/45">
+    <div className="flex h-full flex-col bg-[#1C1C1A] text-invert-fg">
+      <div className="flex items-center justify-between border-b border-white/[0.08] px-5 py-2.5">
+        <span className="font-mono text-[11px] text-invert-fg/40">
           agent · session · create_branded_pdf
         </span>
         <button
           type="button"
           onClick={() => setReplay((n) => n + 1)}
-          className="font-mono text-[10px] text-invert-fg/50 hover:text-invert-fg"
+          className="rounded-md px-2 py-0.5 font-mono text-[10px] text-invert-fg/40 transition-colors hover:bg-white/[0.06] hover:text-invert-fg"
         >
           replay
         </button>
       </div>
 
       <div className="flex-1 overflow-auto p-5 font-mono text-[13px] leading-relaxed sm:p-6 sm:text-[14px]">
-        <p className="text-invert-fg/35">you</p>
-        <p className="mt-1 text-invert-fg/75">
+        <p className="text-invert-fg/30">you</p>
+        <p className="mt-1 text-invert-fg/70">
           Render our Q3 update with the {brand.name} kit.
         </p>
 
-        <p className="mt-6 text-invert-fg/35">tool call</p>
-        <div className="mt-2 space-y-0.5 text-[clamp(0.85rem,2vw,1.15rem)] font-medium text-invert-fg">
+        <p className="mt-6 text-invert-fg/30">tool call</p>
+        <div className="mt-2 space-y-0.5 text-[clamp(0.85rem,2vw,1.1rem)] font-medium text-invert-fg">
           {TOOL_LINES.map((line, i) => (
             <TypeLine
               key={`${replay}-${line}`}
@@ -86,8 +86,8 @@ export function McpTerminalApp() {
         </div>
 
         {phase >= 2 && (
-          <div className="mt-6 space-y-1 text-invert-fg/70">
-            <p className="text-invert-fg/35">result</p>
+          <div className="mt-6 space-y-1 text-invert-fg/65">
+            <p className="text-invert-fg/30">result</p>
             {RESULT_LINES.map((l) => (
               <p key={l}>{l}</p>
             ))}
@@ -98,10 +98,10 @@ export function McpTerminalApp() {
         )}
       </div>
 
-      <div className="border-t border-white/10 px-4 py-3">
-        <p className="text-[12px] leading-relaxed text-invert-fg/50">
+      <div className="border-t border-white/[0.08] px-5 py-3.5">
+        <p className="text-[12px] leading-relaxed text-invert-fg/45">
           Point Claude, Cursor, or any MCP client at Dynamogic. One tool:{" "}
-          <code className="text-invert-fg/80">create_branded_pdf</code>. Same
+          <code className="text-invert-fg/75">create_branded_pdf</code>. Same
           render path as the web demo.
         </p>
       </div>

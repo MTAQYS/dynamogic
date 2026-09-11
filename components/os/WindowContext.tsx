@@ -25,6 +25,7 @@ type WindowContextValue = {
   closeApp: (id: AppId) => void;
   minimizeApp: (id: AppId) => void;
   focusApp: (id: AppId) => void;
+  blurFocus: () => void;
   moveWindow: (id: AppId, x: number, y: number) => void;
   resizeWindow: (id: AppId, width: number, height: number) => void;
   bounceId: AppId | null;
@@ -40,8 +41,8 @@ function defaultPosition(id: AppId, index: number) {
   const meta = APP_META[id];
   const offset = (index % 5) * 28;
   return {
-    x: 72 + offset,
-    y: 56 + offset,
+    x: 96 + offset,
+    y: 48 + offset,
     width: meta.defaultSize.w,
     height: meta.defaultSize.h,
   };
@@ -79,7 +80,7 @@ export function WindowProvider({ children }: { children: ReactNode }) {
       ];
     });
     setBounceId(id);
-    window.setTimeout(() => setBounceId(null), 600);
+    window.setTimeout(() => setBounceId(null), 520);
   }, []);
 
   const closeApp = useCallback((id: AppId) => {
@@ -102,6 +103,10 @@ export function WindowProvider({ children }: { children: ReactNode }) {
         w.id === id ? { ...w, minimized: false, z: zCounter } : w
       )
     );
+  }, []);
+
+  const blurFocus = useCallback(() => {
+    setFocusedId(null);
   }, []);
 
   const moveWindow = useCallback((id: AppId, x: number, y: number) => {
@@ -137,6 +142,7 @@ export function WindowProvider({ children }: { children: ReactNode }) {
       closeApp,
       minimizeApp,
       focusApp,
+      blurFocus,
       moveWindow,
       resizeWindow,
       bounceId,
@@ -151,6 +157,7 @@ export function WindowProvider({ children }: { children: ReactNode }) {
       closeApp,
       minimizeApp,
       focusApp,
+      blurFocus,
       moveWindow,
       resizeWindow,
       bounceId,

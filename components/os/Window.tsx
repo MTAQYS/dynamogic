@@ -17,6 +17,8 @@ type Props = {
   children: ReactNode;
 };
 
+const SPRING = { type: "spring" as const, stiffness: 380, damping: 34, mass: 0.85 };
+
 export function OsWindow({ win, children }: Props) {
   const {
     focusedId,
@@ -121,25 +123,29 @@ export function OsWindow({ win, children }: Props) {
         initial={reduced ? false : { y: "100%" }}
         animate={{ y: 0 }}
         exit={reduced ? undefined : { y: "100%" }}
-        transition={
-          reduced
-            ? { duration: 0 }
-            : { type: "spring", stiffness: 380, damping: 36 }
-        }
+        transition={reduced ? { duration: 0 } : SPRING}
         role="dialog"
         aria-label={win.title}
       >
-        <div className="flex h-12 shrink-0 items-center justify-between border-b border-border bg-bg-muted/80 px-4 backdrop-blur-md">
-          <button
-            type="button"
-            data-window-control
-            onClick={() => closeApp(win.id)}
-            className="text-sm font-medium text-fg-muted"
-          >
-            Close
-          </button>
-          <span className="text-sm font-semibold text-fg">{win.title}</span>
-          <span className="w-12" />
+        {/* Premium sheet chrome */}
+        <div className="flex shrink-0 flex-col border-b border-border/70 bg-bg-paper/95 backdrop-blur-xl">
+          <div className="flex justify-center pt-2 pb-1" aria-hidden>
+            <span className="h-1 w-9 rounded-full bg-fg/15" />
+          </div>
+          <div className="flex h-11 items-center justify-between px-4 pb-1">
+            <button
+              type="button"
+              data-window-control
+              onClick={() => closeApp(win.id)}
+              className="rounded-full px-2 py-1 text-[13px] font-medium text-fg/55 transition-colors hover:bg-fg/[0.05] hover:text-fg"
+            >
+              Close
+            </button>
+            <span className="text-[14px] font-semibold tracking-tight text-fg">
+              {win.title.replace(/\.app$/, "")}
+            </span>
+            <span className="w-12" />
+          </div>
         </div>
         <div className="min-h-0 flex-1 overflow-auto">{children}</div>
       </motion.div>
@@ -148,74 +154,73 @@ export function OsWindow({ win, children }: Props) {
 
   return (
     <motion.div
-      className="absolute flex flex-col overflow-hidden rounded-xl border border-border/80 bg-bg-paper"
+      className="absolute flex flex-col overflow-hidden rounded-2xl bg-bg-paper"
       style={{
         left: win.x,
         top: win.y,
         width: win.width,
         height: win.height,
         zIndex: win.z,
+        border: "0.5px solid rgba(42,42,40,0.12)",
         boxShadow: focused
-          ? "0 24px 64px rgba(42,42,40,0.18), 0 0 0 1px rgba(42,42,40,0.06)"
-          : "0 12px 40px rgba(42,42,40,0.10), 0 0 0 1px rgba(42,42,40,0.04)",
+          ? "0 28px 72px -12px rgba(42,42,40,0.22), 0 12px 28px -8px rgba(42,42,40,0.10), 0 0 0 0.5px rgba(42,42,40,0.06)"
+          : "0 16px 48px -12px rgba(42,42,40,0.12), 0 6px 16px -4px rgba(42,42,40,0.06), 0 0 0 0.5px rgba(42,42,40,0.04)",
       }}
-      initial={reduced ? false : { opacity: 0, scale: 0.92, y: 16 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={reduced ? undefined : { opacity: 0, scale: 0.94, y: 12 }}
-      transition={
-        reduced
-          ? { duration: 0 }
-          : { type: "spring", stiffness: 420, damping: 32 }
-      }
+      initial={reduced ? false : { opacity: 0, scale: 0.96, y: 10 }}
+      animate={{
+        opacity: focused ? 1 : 0.92,
+        scale: 1,
+        y: 0,
+      }}
+      exit={reduced ? undefined : { opacity: 0, scale: 0.97, y: 8 }}
+      transition={reduced ? { duration: 0 } : SPRING}
       onMouseDown={() => focusApp(win.id)}
       role="dialog"
       aria-label={win.title}
       aria-modal={false}
     >
       <div
-        className="flex h-10 shrink-0 cursor-grab items-center gap-3 border-b border-border bg-bg-muted/90 px-3 active:cursor-grabbing"
+        className={`flex h-11 shrink-0 cursor-grab items-center gap-3 border-b px-3.5 active:cursor-grabbing ${
+          focused
+            ? "border-border/70 bg-bg-muted/70"
+            : "border-border/50 bg-bg-muted/40"
+        }`}
         onPointerDown={onDragStart}
         onPointerMove={onDragMove}
         onPointerUp={onDragEnd}
         onPointerCancel={onDragEnd}
       >
-        <div className="flex items-center gap-1.5" data-window-control>
-          <button
-            type="button"
-            aria-label="Close window"
-            data-window-control
+        <div className="flex items-center gap-2" data-window-control>
+          <TrafficLight
+            color="#FF5F57"
+            border="#E0443E"
+            label="Close window"
             onClick={() => closeApp(win.id)}
-            className="group flex h-3 w-3 items-center justify-center rounded-full bg-[#E8A0A0] transition-transform hover:scale-110"
-          >
-            <span className="sr-only">Close</span>
-          </button>
-          <button
-            type="button"
-            aria-label="Minimize window"
-            data-window-control
+            symbol="×"
+          />
+          <TrafficLight
+            color="#FEBC2E"
+            border="#DEA123"
+            label="Minimize window"
             onClick={() => minimizeApp(win.id)}
-            className="h-3 w-3 rounded-full bg-[#E8D49A] transition-transform hover:scale-110"
-          >
-            <span className="sr-only">Minimize</span>
-          </button>
-          <button
-            type="button"
-            aria-label="Focus window"
-            data-window-control
+            symbol="−"
+          />
+          <TrafficLight
+            color="#28C840"
+            border="#1AAB29"
+            label="Focus window"
             onClick={() => focusApp(win.id)}
-            className="h-3 w-3 rounded-full bg-[#B8D4B0] transition-transform hover:scale-110"
-          >
-            <span className="sr-only">Focus</span>
-          </button>
+            symbol="+"
+          />
         </div>
         <span
-          className={`flex-1 truncate text-center text-[12px] font-medium ${
-            focused ? "text-fg" : "text-fg-muted"
+          className={`flex-1 truncate text-center text-[12.5px] font-semibold tracking-tight ${
+            focused ? "text-fg/90" : "text-fg/45"
           }`}
         >
           {win.title}
         </span>
-        <span className="w-12" aria-hidden />
+        <span className="w-[52px]" aria-hidden />
       </div>
       <div className="relative min-h-0 flex-1 overflow-auto">{children}</div>
       <div
@@ -227,5 +232,38 @@ export function OsWindow({ win, children }: Props) {
         aria-hidden
       />
     </motion.div>
+  );
+}
+
+function TrafficLight({
+  color,
+  border,
+  label,
+  onClick,
+  symbol,
+}: {
+  color: string;
+  border: string;
+  label: string;
+  onClick: () => void;
+  symbol: string;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      data-window-control
+      onClick={onClick}
+      className="group flex h-[12px] w-[12px] items-center justify-center rounded-full transition-transform hover:scale-110"
+      style={{
+        background: color,
+        boxShadow: `inset 0 0 0 0.5px ${border}`,
+      }}
+    >
+      <span className="text-[8px] font-bold leading-none text-black/50 opacity-0 transition-opacity group-hover:opacity-100">
+        {symbol}
+      </span>
+      <span className="sr-only">{label}</span>
+    </button>
   );
 }

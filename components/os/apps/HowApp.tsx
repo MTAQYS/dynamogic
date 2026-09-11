@@ -24,30 +24,30 @@ export function HowApp() {
   const { openApp } = useWindows();
 
   return (
-    <div className="h-full overflow-auto bg-bg p-5">
-      <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-fg-muted">
-        Pipeline
-      </p>
-      <h2 className="mt-1 text-xl font-bold tracking-tight text-fg">
-        Three steps. One pipeline.
-      </h2>
-      <ol className="mt-5 space-y-4">
+    <div className="h-full overflow-auto bg-bg app-pad">
+      <p className="app-kicker">Pipeline</p>
+      <h2 className="app-title">Three steps. One pipeline.</h2>
+      <ol className="mt-6 space-y-3">
         {steps.map((s) => (
           <li
             key={s.n}
-            className="flex gap-4 rounded-xl border border-border bg-bg-paper p-4"
+            className="flex gap-4 rounded-2xl border border-border/80 bg-bg-paper p-4 shadow-soft"
           >
-            <span className="font-mono text-[11px] text-fg-muted">{s.n}</span>
+            <span className="font-mono text-[11px] font-medium text-fg/35">
+              {s.n}
+            </span>
             <div>
-              <h3 className="text-sm font-bold text-fg">{s.title}</h3>
-              <p className="mt-1 text-xs leading-relaxed text-fg-muted">
+              <h3 className="text-[13px] font-semibold tracking-tight text-fg">
+                {s.title}
+              </h3>
+              <p className="mt-1 text-[12.5px] leading-relaxed text-fg-muted">
                 {s.body}
               </p>
             </div>
           </li>
         ))}
       </ol>
-      <p className="mt-5 text-xs leading-relaxed text-fg-muted">
+      <p className="mt-5 text-[12.5px] leading-relaxed text-fg-muted">
         Competitors like Canva or native chat exports are great at other jobs.
         Dynamogic focuses on repeatable brand application for text-first AI
         output.
@@ -55,7 +55,7 @@ export function HowApp() {
       <button
         type="button"
         onClick={() => openApp("demo")}
-        className="btn-soft mt-4 inline-flex h-9 items-center rounded-md px-4 text-xs font-bold"
+        className="btn-soft mt-5 inline-flex h-9 items-center rounded-xl px-4 text-[12px] font-semibold tracking-tight"
       >
         Try Demo.app
       </button>

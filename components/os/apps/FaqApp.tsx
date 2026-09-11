@@ -41,12 +41,10 @@ export function FaqApp() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <div className="h-full overflow-auto bg-bg p-5">
-      <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-fg-muted">
-        Docs
-      </p>
-      <h2 className="mt-1 text-xl font-bold tracking-tight text-fg">FAQ</h2>
-      <div className="mt-4 divide-y divide-border border-y border-border">
+    <div className="h-full overflow-auto bg-bg app-pad">
+      <p className="app-kicker">Docs</p>
+      <h2 className="app-title">FAQ</h2>
+      <div className="mt-5 divide-y divide-border/70 rounded-2xl border border-border/80 bg-bg-paper px-4 shadow-soft">
         {faqs.map((item, i) => {
           const isOpen = open === i;
           return (
@@ -57,18 +55,18 @@ export function FaqApp() {
                 aria-expanded={isOpen}
                 onClick={() => setOpen(isOpen ? null : i)}
               >
-                <span className="text-[13px] font-medium leading-snug text-fg">
+                <span className="text-[13px] font-medium leading-snug tracking-tight text-fg">
                   {item.q}
                 </span>
                 <span
-                  className="mt-0.5 shrink-0 font-mono text-[11px] text-fg-muted"
+                  className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-fg/[0.04] font-mono text-[11px] text-fg-muted"
                   aria-hidden
                 >
                   {isOpen ? "−" : "+"}
                 </span>
               </button>
               {isOpen && (
-                <p className="pb-3.5 pr-8 text-[12px] leading-relaxed text-fg-muted">
+                <p className="pb-3.5 pr-8 text-[12.5px] leading-relaxed text-fg-muted">
                   {item.a}
                 </p>
               )}

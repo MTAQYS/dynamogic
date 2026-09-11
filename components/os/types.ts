@@ -31,48 +31,41 @@ export type BrandKitState = {
 
 export const APP_META: Record<
   AppId,
-  { title: string; label: string; icon: string; defaultSize: { w: number; h: number } }
+  { title: string; label: string; defaultSize: { w: number; h: number } }
 > = {
   demo: {
     title: "Demo.app",
     label: "Demo",
-    icon: "📄",
     defaultSize: { w: 920, h: 640 },
   },
   brand: {
     title: "Brand Kit.app",
     label: "Brand Kit",
-    icon: "🎨",
     defaultSize: { w: 520, h: 560 },
   },
   mcp: {
     title: "MCP Terminal.app",
     label: "MCP Terminal",
-    icon: "⌘",
     defaultSize: { w: 640, h: 420 },
   },
   pricing: {
     title: "Pricing.app",
     label: "Pricing",
-    icon: "💎",
     defaultSize: { w: 780, h: 520 },
   },
   faq: {
     title: "FAQ.app",
     label: "Docs / FAQ",
-    icon: "❓",
     defaultSize: { w: 560, h: 520 },
   },
   about: {
     title: "About.app",
     label: "About",
-    icon: "ℹ️",
     defaultSize: { w: 480, h: 420 },
   },
   how: {
     title: "How it works.app",
     label: "How it works",
-    icon: "✨",
     defaultSize: { w: 480, h: 400 },
   },
 };

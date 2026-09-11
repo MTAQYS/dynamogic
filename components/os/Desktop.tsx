@@ -41,7 +41,7 @@ function AppContent({ id }: { id: AppId }) {
 }
 
 function DesktopInner() {
-  const { windows, setIsMobile, focusedId, closeApp } = useWindows();
+  const { windows, setIsMobile, focusedId, closeApp, blurFocus } = useWindows();
   const [booted, setBooted] = useState(false);
 
   useEffect(() => {
@@ -69,7 +69,14 @@ function DesktopInner() {
       <BootSplash onDone={onBootDone} />
       <MenuBar />
       <div className="relative min-h-0 flex-1">
-        <Wallpaper />
+        {/* Wallpaper + click-outside to soft-unfocus */}
+        <div
+          className="absolute inset-0 z-0"
+          onMouseDown={() => blurFocus()}
+          aria-hidden
+        >
+          <Wallpaper />
+        </div>
         {booted && (
           <>
             <DesktopIcons />

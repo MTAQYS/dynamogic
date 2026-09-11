@@ -25,15 +25,11 @@ export function BrandKitApp() {
   }
 
   return (
-    <div className="flex h-full flex-col gap-4 overflow-auto bg-bg p-5">
+    <div className="flex h-full flex-col gap-5 overflow-auto bg-bg app-pad">
       <div>
-        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-fg-muted">
-          Brand Layer
-        </p>
-        <h2 className="mt-1 text-xl font-bold tracking-tight text-fg">
-          Kit editor
-        </h2>
-        <p className="mt-1 text-sm text-fg-muted">
+        <p className="app-kicker">Brand Layer</p>
+        <h2 className="app-title">Kit editor</h2>
+        <p className="mt-1.5 text-[13px] leading-relaxed text-fg-muted">
           Play with presets. Color stays inside the PDF preview.
         </p>
       </div>
@@ -44,10 +40,10 @@ export function BrandKitApp() {
             key={p.id}
             type="button"
             onClick={() => applyPreset(p.id)}
-            className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+            className={`rounded-full border px-3.5 py-1.5 text-[12px] font-semibold tracking-tight transition-colors ${
               brand.presetId === p.id
-                ? "border-border-strong bg-invert-bg text-invert-fg"
-                : "border-border bg-bg-paper text-fg hover:bg-bg-muted"
+                ? "border-transparent bg-[#2A2A28] text-invert-fg"
+                : "border-border/80 bg-bg-paper text-fg hover:bg-bg-muted"
             }`}
           >
             {p.label}
@@ -55,10 +51,10 @@ export function BrandKitApp() {
         ))}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3.5 sm:grid-cols-2">
         <Field label="Brand name">
           <input
-            className="h-10 w-full rounded-md border border-border bg-bg-paper px-3 text-sm"
+            className="h-10 w-full rounded-xl border border-border/80 bg-bg-paper px-3 text-sm shadow-soft"
             value={brand.name}
             onChange={(e) =>
               setBrand((b) => ({ ...b, name: e.target.value, presetId: "custom" }))
@@ -77,10 +73,10 @@ export function BrandKitApp() {
                   presetId: "custom",
                 }))
               }
-              className="h-10 w-12 cursor-pointer rounded-md border border-border bg-bg-paper p-1"
+              className="h-10 w-12 cursor-pointer rounded-xl border border-border/80 bg-bg-paper p-1"
             />
             <input
-              className="h-10 w-full rounded-md border border-border bg-bg-paper px-3 font-mono text-sm"
+              className="h-10 w-full rounded-xl border border-border/80 bg-bg-paper px-3 font-mono text-sm shadow-soft"
               value={brand.primary_color}
               onChange={(e) =>
                 setBrand((b) => ({
@@ -94,7 +90,7 @@ export function BrandKitApp() {
         </Field>
         <Field label="Accent style">
           <select
-            className="h-10 w-full rounded-md border border-border bg-bg-paper px-3 text-sm"
+            className="h-10 w-full rounded-xl border border-border/80 bg-bg-paper px-3 text-sm shadow-soft"
             value={brand.accent_style}
             onChange={(e) =>
               setBrand((b) => ({
@@ -111,7 +107,7 @@ export function BrandKitApp() {
         </Field>
         <Field label="Footer text">
           <input
-            className="h-10 w-full rounded-md border border-border bg-bg-paper px-3 text-sm"
+            className="h-10 w-full rounded-xl border border-border/80 bg-bg-paper px-3 text-sm shadow-soft"
             value={brand.footer_text}
             onChange={(e) =>
               setBrand((b) => ({
@@ -124,11 +120,10 @@ export function BrandKitApp() {
         </Field>
       </div>
 
-      {/* Live visual preview card — brand color only here */}
       <motion.div
-        className="rounded-xl border border-border bg-bg-paper p-5 shadow-soft"
+        className="rounded-2xl border border-border/80 bg-bg-paper p-5 shadow-soft"
         layout={!reduced}
-        style={{ borderTopWidth: 4, borderTopColor: brand.primary_color }}
+        style={{ borderTopWidth: 3, borderTopColor: brand.primary_color }}
       >
         <p
           className="text-[11px] font-bold tracking-[0.22em]"
@@ -136,10 +131,10 @@ export function BrandKitApp() {
         >
           {brand.name.toUpperCase()}
         </p>
-        <p className="mt-3 text-lg font-extrabold tracking-tight text-fg">
+        <p className="mt-3 text-lg font-semibold tracking-tight text-fg">
           Q3 Product Update
         </p>
-        <p className="mt-2 text-sm leading-relaxed text-fg-muted">
+        <p className="mt-2 text-[13px] leading-relaxed text-fg-muted">
           Sample page chrome. Your kit layers onto AI drafts — logo, color,
           footer — same engine for demo, API, and MCP.
         </p>
@@ -158,7 +153,7 @@ export function BrandKitApp() {
             <p className="text-xs text-fg-muted">Left-rule accent active</p>
           </div>
         )}
-        <p className="mt-5 border-t border-border pt-3 font-mono text-[10px] text-fg-muted">
+        <p className="mt-5 border-t border-border/70 pt-3 font-mono text-[10px] text-fg-muted">
           {brand.footer_text}
         </p>
       </motion.div>
@@ -166,7 +161,7 @@ export function BrandKitApp() {
       <button
         type="button"
         onClick={() => openApp("demo")}
-        className="btn-soft inline-flex h-10 w-fit items-center rounded-md px-5 text-sm font-bold"
+        className="btn-soft inline-flex h-10 w-fit items-center rounded-xl px-5 text-[13px] font-semibold tracking-tight"
       >
         Apply in Demo.app
       </button>
@@ -184,7 +179,7 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <label className="block text-xs font-medium text-fg-muted">
+    <label className="block text-[11px] font-medium tracking-tight text-fg-muted">
       {label}
       <div className="mt-1.5">{children}</div>
     </label>

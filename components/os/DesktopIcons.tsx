@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { AppIcon } from "./AppIcon";
 import { useWindows } from "./WindowContext";
 import { APP_META, type AppId } from "./types";
 
@@ -7,31 +9,47 @@ const ICONS: AppId[] = ["demo", "brand", "mcp", "pricing", "faq", "about"];
 
 export function DesktopIcons() {
   const { openApp, isMobile } = useWindows();
+  const [selected, setSelected] = useState<AppId | null>(null);
 
   if (isMobile) return null;
 
   return (
     <ul
-      className="absolute left-4 top-12 z-10 flex flex-col gap-3"
+      className="absolute left-3 top-10 z-10 flex flex-col gap-1"
       aria-label="Desktop icons"
     >
       {ICONS.map((id) => {
         const meta = APP_META[id];
+        const isSelected = selected === id;
         return (
           <li key={id}>
             <button
               type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelected(id);
+                openApp(id);
+              }}
               onDoubleClick={() => openApp(id)}
-              onClick={() => openApp(id)}
-              className="group flex w-[76px] flex-col items-center gap-1.5 rounded-lg p-2 text-center hover:bg-fg/[0.04] focus-visible:bg-fg/[0.06]"
+              className={`group flex w-[84px] flex-col items-center gap-1.5 rounded-xl px-2 py-2.5 text-center transition-colors ${
+                isSelected
+                  ? "bg-fg/[0.07] ring-1 ring-fg/[0.06]"
+                  : "hover:bg-fg/[0.035]"
+              }`}
             >
               <span
-                className="flex h-12 w-12 items-center justify-center rounded-2xl border border-border/60 bg-bg-paper/90 text-2xl shadow-soft backdrop-blur-sm transition-transform group-hover:scale-105"
+                className="flex h-[52px] w-[52px] items-center justify-center rounded-[14px] border border-border/50 bg-bg-paper/85 shadow-[0_2px_8px_rgba(42,42,40,0.05),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md transition-transform duration-200 group-hover:scale-[1.04]"
                 aria-hidden
               >
-                {meta.icon}
+                <AppIcon id={id} size={24} />
               </span>
-              <span className="text-[11px] font-medium leading-tight text-fg drop-shadow-sm">
+              <span
+                className={`max-w-full truncate rounded-md px-1.5 py-0.5 text-[11px] font-medium leading-tight tracking-tight ${
+                  isSelected
+                    ? "bg-fg/80 text-invert-fg"
+                    : "text-fg/90"
+                }`}
+              >
                 {meta.label}
               </span>
             </button>
