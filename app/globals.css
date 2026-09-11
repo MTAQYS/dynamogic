@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #ffffff;
+  --bg-muted: #f7f7f5;
+  --fg: #0a0a0a;
+  --fg-muted: #525252;
+  --border: #e5e5e5;
+  --border-strong: #0a0a0a;
+  --invert-bg: #0a0a0a;
+  --invert-fg: #fafafa;
+  --focus: #0a0a0a;
+  --danger: #b91c1c;
+  --success: #166534;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: #0a0a0a;
+  color: #fafafa;
+}
+
+.prose-demo textarea {
+  font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.section-pad {
+  @apply py-20 sm:py-24;
+}
