@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Reveal } from "./motion/Reveal";
 
 const faqs = [
   {
@@ -42,7 +43,7 @@ export function FAQ() {
 
   return (
     <section id="faq" className="mx-auto max-w-3xl px-4 section-pad sm:px-6">
-      <h2 className="text-3xl font-semibold tracking-tight sm:text-[2rem]">FAQ</h2>
+      <Reveal><h2 className="display text-[2rem] text-fg sm:text-[2.35rem]">FAQ</h2></Reveal>
       <div className="mt-10 divide-y divide-border border-y border-border">
         {faqs.map((item, i) => {
           const isOpen = open === i;
@@ -50,22 +51,22 @@ export function FAQ() {
             <div key={item.q}>
               <button
                 type="button"
-                className="flex w-full items-center justify-between gap-4 py-5 text-left"
+                className="flex w-full items-start justify-between gap-6 py-4 text-left"
                 aria-expanded={isOpen}
                 onClick={() => setOpen(isOpen ? null : i)}
               >
-                <span className="pr-4 text-[15px] font-medium leading-snug text-fg">
+                <span className="pr-2 text-[15px] leading-snug text-fg">
                   {item.q}
                 </span>
                 <span
-                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border text-sm text-fg-muted"
+                  className="mt-0.5 shrink-0 font-mono text-[12px] text-fg-muted"
                   aria-hidden="true"
                 >
                   {isOpen ? "−" : "+"}
                 </span>
               </button>
               {isOpen && (
-                <p className="pb-5 pr-12 text-sm leading-relaxed text-fg-muted">
+                <p className="pb-4 pr-10 text-sm leading-relaxed text-fg-muted">
                   {item.a}
                 </p>
               )}

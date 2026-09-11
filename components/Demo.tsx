@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { assetPath } from "@/lib/site";
+import { Reveal } from "./motion/Reveal";
 
 const SAMPLE_MARKDOWN = `# Q3 Product Update
 ## Highlights
@@ -193,22 +194,22 @@ export function Demo() {
   return (
     <section id="demo" className="border-y border-border bg-bg-muted section-pad">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="max-w-2xl">
-          <h2 className="text-3xl font-semibold tracking-tight text-fg sm:text-[2rem]">
-            Try it on a sample (or your own paste)
+        <Reveal className="max-w-2xl">
+          <h2 className="display text-[2rem] text-fg sm:text-[2.35rem]">
+            Try it on a sample
           </h2>
           <p className="mt-3 text-[15px] leading-relaxed text-fg-muted">
             Markdown supported. Color appears in the PDF preview from the sample
             brand kit — the site stays monochrome on purpose.
           </p>
           {isStatic && (
-            <p className="mt-3 rounded-lg border border-border bg-bg px-3 py-2 text-xs text-fg-muted">
+            <p className="mt-3 border border-border bg-bg px-3 py-2 font-mono text-[11px] leading-relaxed text-fg-muted">
               GitHub Pages preview: controls are interactive; Generate loads a
               sample branded PDF (server-side Playwright runs on{" "}
-              <code className="font-mono">npm run dev</code> / Vercel).
+              <code>npm run dev</code> / Vercel).
             </p>
           )}
-        </div>
+        </Reveal>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-2 lg:gap-8">
           <div className="space-y-4">
@@ -218,14 +219,14 @@ export function Demo() {
               </label>
               <textarea
                 id="content"
-                className="prose-demo mt-2 h-56 w-full resize-y rounded-xl border border-border bg-bg p-4 text-fg shadow-soft focus:border-border-strong"
+                className="prose-demo mt-2 h-56 w-full resize-y rounded-md border border-border bg-bg-paper p-4 text-fg focus:border-border-strong"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 spellCheck={false}
               />
             </div>
 
-            <fieldset className="rounded-xl border border-border bg-bg p-5 shadow-soft">
+            <fieldset className="rounded-md border border-border bg-bg-paper p-5">
               <legend className="px-1 text-sm font-medium text-fg">
                 Sample brand kit
               </legend>
@@ -236,7 +237,7 @@ export function Demo() {
                     key={p.id}
                     type="button"
                     onClick={() => applyPreset(p.id)}
-                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                    className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
                       presetId === p.id
                         ? "border-border-strong bg-fg text-invert-fg"
                         : "border-border text-fg hover:bg-bg-muted"
@@ -249,18 +250,18 @@ export function Demo() {
 
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="brand-name" className="text-xs font-medium text-fg-muted">
+                  <label htmlFor="brand-name" className="text-xs text-fg-muted">
                     Name
                   </label>
                   <input
                     id="brand-name"
-                    className="mt-1.5 h-10 w-full rounded-lg border border-border px-3 text-sm"
+                    className="mt-1.5 h-9 w-full rounded-md border border-border bg-bg px-3 text-sm"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
                 <div>
-                  <label htmlFor="brand-color" className="text-xs font-medium text-fg-muted">
+                  <label htmlFor="brand-color" className="text-xs text-fg-muted">
                     Primary color (PDF only)
                   </label>
                   <div className="mt-1.5 flex items-center gap-2">
@@ -269,23 +270,23 @@ export function Demo() {
                       type="color"
                       value={primary}
                       onChange={(e) => setPrimary(e.target.value)}
-                      className="h-10 w-12 cursor-pointer rounded-lg border border-border bg-bg p-1"
+                      className="h-9 w-11 cursor-pointer rounded-md border border-border bg-bg p-1"
                     />
                     <input
                       aria-label="Primary color hex"
-                      className="h-10 w-full rounded-lg border border-border px-3 font-mono text-sm"
+                      className="h-9 w-full rounded-md border border-border bg-bg px-3 font-mono text-sm"
                       value={primary}
                       onChange={(e) => setPrimary(e.target.value)}
                     />
                   </div>
                 </div>
                 <div>
-                  <label htmlFor="accent" className="text-xs font-medium text-fg-muted">
+                  <label htmlFor="accent" className="text-xs text-fg-muted">
                     Accent style
                   </label>
                   <select
                     id="accent"
-                    className="mt-1.5 h-10 w-full rounded-lg border border-border px-3 text-sm"
+                    className="mt-1.5 h-9 w-full rounded-md border border-border bg-bg px-3 text-sm"
                     value={accent}
                     onChange={(e) =>
                       setAccent(
@@ -299,18 +300,18 @@ export function Demo() {
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="footer" className="text-xs font-medium text-fg-muted">
+                  <label htmlFor="footer" className="text-xs text-fg-muted">
                     Footer text
                   </label>
                   <input
                     id="footer"
-                    className="mt-1.5 h-10 w-full rounded-lg border border-border px-3 text-sm"
+                    className="mt-1.5 h-9 w-full rounded-md border border-border bg-bg px-3 text-sm"
                     value={footer}
                     onChange={(e) => setFooter(e.target.value)}
                   />
                 </div>
                 <div className="sm:col-span-2">
-                  <label htmlFor="logo" className="text-xs font-medium text-fg-muted">
+                  <label htmlFor="logo" className="text-xs text-fg-muted">
                     Optional logo
                   </label>
                   <input
@@ -332,7 +333,7 @@ export function Demo() {
                 onClick={generate}
                 disabled={status === "busy"}
                 aria-busy={status === "busy"}
-                className="inline-flex h-11 items-center rounded-lg bg-fg px-6 text-sm font-medium text-invert-fg disabled:opacity-60"
+                className="inline-flex h-10 items-center rounded-md bg-fg px-5 text-sm font-medium text-invert-fg disabled:opacity-60"
               >
                 {status === "busy" ? "Generating…" : "Generate PDF"}
               </button>
@@ -361,7 +362,7 @@ export function Demo() {
                 <a
                   href={pdfUrl}
                   download="dynamogic-demo.pdf"
-                  className="inline-flex h-10 items-center rounded-lg border border-border-strong px-4 text-sm font-medium"
+                  className="inline-flex h-9 items-center rounded-md border border-border-strong px-4 text-sm font-medium"
                 >
                   Download
                 </a>
@@ -369,7 +370,7 @@ export function Demo() {
                   <button
                     type="button"
                     onClick={copySharePlaceholder}
-                    className="inline-flex h-10 items-center rounded-lg border border-border px-4 text-sm font-medium text-fg-muted"
+                    className="inline-flex h-9 items-center rounded-md border border-border px-4 text-sm text-fg-muted"
                   >
                     Copy share link
                   </button>
@@ -378,7 +379,11 @@ export function Demo() {
             )}
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-border bg-bg shadow-[0_16px_40px_-28px_rgba(0,0,0,0.45)]">
+          <div className="overflow-hidden rounded-md border border-border bg-bg-paper">
+            <div className="flex items-center justify-between border-b border-border px-4 py-2">
+              <p className="font-mono text-[11px] text-fg-muted">pdf preview</p>
+              <p className="font-mono text-[11px] text-fg-muted">{name}</p>
+            </div>
             {pdfUrl ? (
               <object
                 data={pdfUrl}
@@ -395,16 +400,16 @@ export function Demo() {
             ) : (
               <div className="flex min-h-[480px] flex-col justify-center gap-4 p-8">
                 <div
-                  className="mx-auto w-full max-w-sm rounded-xl border border-border bg-bg-muted/40 p-5"
-                  style={{ borderTopWidth: 3, borderTopColor: primary }}
+                  className="mx-auto w-full max-w-sm border border-border bg-bg p-5"
+                  style={{ borderLeftWidth: 3, borderLeftColor: primary }}
                 >
                   <p
-                    className="text-[10px] font-semibold tracking-wide"
+                    className="text-[10px] font-medium tracking-wide"
                     style={{ color: primary }}
                   >
                     {name.toUpperCase()}
                   </p>
-                  <p className="mt-2 text-sm font-semibold">Live preview frame</p>
+                  <p className="mt-2 font-serif text-base">Live preview frame</p>
                   <p className="mt-2 text-xs leading-relaxed text-fg-muted">
                     Generate to load a real PDF here. Brand color appears only
                     inside this preview — never on site buttons.

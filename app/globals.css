@@ -3,15 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --bg: #ffffff;
-  --bg-muted: #f7f7f5;
-  --fg: #0a0a0a;
-  --fg-muted: #525252;
-  --border: #e5e5e5;
-  --border-strong: #0a0a0a;
-  --invert-bg: #0a0a0a;
-  --invert-fg: #fafafa;
-  --focus: #0a0a0a;
+  --bg: #fafaf7;
+  --bg-muted: #f3f2ec;
+  --bg-paper: #fffef9;
+  --fg: #111111;
+  --fg-muted: #5c5c57;
+  --border: #e6e4dc;
+  --border-strong: #111111;
+  --invert-bg: #141413;
+  --invert-fg: #f5f4ef;
+  --focus: #111111;
   --danger: #b91c1c;
   --success: #166534;
 }
@@ -24,20 +25,13 @@ html {
   html {
     scroll-behavior: auto;
   }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
 }
 
 body {
   background: var(--bg);
   color: var(--fg);
   font-size: 16px;
-  line-height: 1.55;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -48,16 +42,32 @@ body {
 }
 
 ::selection {
-  background: #0a0a0a;
-  color: #fafafa;
+  background: #111111;
+  color: #f5f4ef;
 }
 
 .prose-demo textarea {
   font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.55;
 }
 
 .section-pad {
-  @apply py-20 sm:py-24;
+  @apply py-16 sm:py-24;
+}
+
+.display {
+  font-family: var(--font-serif), ui-serif, Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.hairline {
+  border-color: var(--border);
+}
+
+/* GPU-friendly motion helpers */
+.will-change-transform {
+  will-change: transform;
 }
