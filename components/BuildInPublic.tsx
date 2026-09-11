@@ -1,18 +1,22 @@
+"use client";
+
+import { Reveal } from "./motion/Reveal";
+
 export function BuildInPublic() {
   return (
-    <section className="border-y border-border bg-bg-muted py-12">
-      <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-        <p className="max-w-3xl text-sm leading-relaxed text-fg-muted">
+    <section className="border-y border-border py-12 sm:py-16">
+      <Reveal className="site-wrap flex flex-col gap-4 sm:flex-row sm:items-baseline sm:justify-between">
+        <p className="max-w-2xl text-sm leading-relaxed text-fg-muted">
           Building Dynamogic in public — brand kits, one MCP tool, fair-use free
-          tier. Follow along on X/LinkedIn. Founding seats limited to 50.
+          tier. Founding seats limited to 50.
         </p>
         <a
           href="#footer"
-          className="inline-flex h-10 shrink-0 items-center rounded-lg border border-border-strong px-4 text-sm font-medium transition-colors hover:bg-bg"
+          className="shrink-0 text-sm text-fg underline decoration-border underline-offset-4 hover:decoration-fg"
         >
-          Follow updates
+          Follow updates →
         </a>
-      </div>
+      </Reveal>
     </section>
   );
 }

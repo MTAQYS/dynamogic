@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Reveal } from "./motion/Reveal";
 
 const faqs = [
   {
@@ -22,7 +21,7 @@ const faqs = [
   },
   {
     q: "Do you train on my content?",
-    a: "Product docs should state current practice in Privacy Policy. Default intent: content is used to render your PDFs and operate the service — not to sell training data. Link Privacy Policy.",
+    a: "Default intent: content is used to render your PDFs and operate the service — not to sell training data. See Privacy Policy when published.",
   },
   {
     q: "Which email and payment providers?",
@@ -30,7 +29,7 @@ const faqs = [
   },
   {
     q: "Can my agent use this?",
-    a: "Yes. Connect MCP with an API key and call create_branded_pdf. See the MCP section / docs.",
+    a: "Yes. Connect MCP with an API key and call create_branded_pdf.",
   },
   {
     q: "What file formats do you support?",
@@ -38,44 +37,38 @@ const faqs = [
   },
 ];
 
-export function FAQ() {
+export function FaqApp() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="section-pad">
-      <div className="site-wrap">
-      <div className="mx-auto max-w-3xl">
-      <Reveal>
-        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-fg-muted">
-          FAQ
-        </p>
-        <h2 className="display-xl mt-4 text-[clamp(2rem,4.5vw,3.25rem)] text-fg">
-          FAQ
-        </h2>
-      </Reveal>
-      <div className="mt-12 divide-y divide-border border-y border-border">
+    <div className="h-full overflow-auto bg-bg p-5">
+      <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-fg-muted">
+        Docs
+      </p>
+      <h2 className="mt-1 text-xl font-bold tracking-tight text-fg">FAQ</h2>
+      <div className="mt-4 divide-y divide-border border-y border-border">
         {faqs.map((item, i) => {
           const isOpen = open === i;
           return (
             <div key={item.q}>
               <button
                 type="button"
-                className="flex w-full items-start justify-between gap-6 py-5 text-left sm:py-6"
+                className="flex w-full items-start justify-between gap-4 py-3.5 text-left"
                 aria-expanded={isOpen}
                 onClick={() => setOpen(isOpen ? null : i)}
               >
-                <span className="pr-2 text-[15px] font-medium leading-snug text-fg">
+                <span className="text-[13px] font-medium leading-snug text-fg">
                   {item.q}
                 </span>
                 <span
-                  className="mt-0.5 shrink-0 font-mono text-[12px] text-fg-muted"
-                  aria-hidden="true"
+                  className="mt-0.5 shrink-0 font-mono text-[11px] text-fg-muted"
+                  aria-hidden
                 >
                   {isOpen ? "−" : "+"}
                 </span>
               </button>
               {isOpen && (
-                <p className="pb-5 pr-10 text-sm leading-relaxed text-fg-muted">
+                <p className="pb-3.5 pr-8 text-[12px] leading-relaxed text-fg-muted">
                   {item.a}
                 </p>
               )}
@@ -83,8 +76,6 @@ export function FAQ() {
           );
         })}
       </div>
-      </div>
-      </div>
-    </section>
+    </div>
   );
 }

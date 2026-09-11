@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { assetPath } from "@/lib/site";
+import { Reveal } from "./motion/Reveal";
 
 const SAMPLE_MARKDOWN = `# Q3 Product Update
 ## Highlights
@@ -40,7 +41,7 @@ const PRESETS = [
     id: "mono",
     label: "Mono Minimal",
     name: "Mono Co",
-    primary_color: "#0A0A0A",
+    primary_color: "#1A1A1A",
     font_heading: "Inter",
     font_body: "Inter",
     accent_style: "minimal" as const,
@@ -120,7 +121,6 @@ export function Demo() {
       setPdfUrl(null);
     }
 
-    // GitHub Pages static export — polished mock using sample PDF asset
     if (isStatic) {
       await new Promise((r) => setTimeout(r, 650));
       setPdfUrl(assetPath("/sample-demo.pdf"));
@@ -192,226 +192,252 @@ export function Demo() {
 
   return (
     <section id="demo" className="border-y border-border bg-bg-muted section-pad">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="max-w-2xl">
-          <h2 className="text-3xl font-semibold tracking-tight text-fg sm:text-[2rem]">
-            Try it on a sample (or your own paste)
+      <div className="site-wrap">
+        <Reveal className="max-w-2xl">
+          <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-fg-muted">
+            Product demo bay
+          </p>
+          <h2 className="display-xl mt-4 text-[clamp(2rem,4.5vw,3.25rem)] text-fg">
+            Try it on a sample
           </h2>
-          <p className="mt-3 text-[15px] leading-relaxed text-fg-muted">
+          <p className="mt-5 text-[15px] leading-relaxed text-fg-muted">
             Markdown supported. Color appears in the PDF preview from the sample
             brand kit — the site stays monochrome on purpose.
           </p>
           {isStatic && (
-            <p className="mt-3 rounded-lg border border-border bg-bg px-3 py-2 text-xs text-fg-muted">
+            <p className="mt-4 border border-border bg-bg px-3 py-2 font-mono text-[11px] leading-relaxed text-fg-muted">
               GitHub Pages preview: controls are interactive; Generate loads a
               sample branded PDF (server-side Playwright runs on{" "}
-              <code className="font-mono">npm run dev</code> / Vercel).
+              <code>npm run dev</code> / Vercel).
             </p>
           )}
-        </div>
+        </Reveal>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-2 lg:gap-8">
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="content" className="text-sm font-medium text-fg">
-                Content
-              </label>
-              <textarea
-                id="content"
-                className="prose-demo mt-2 h-56 w-full resize-y rounded-xl border border-border bg-bg p-4 text-fg shadow-soft focus:border-border-strong"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                spellCheck={false}
-              />
+        {/* Demo bay frame — bold borders, expensive feel */}
+        <div className="mt-12 border border-border-strong/50 bg-bg shadow-bay">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border-strong/40 bg-invert-bg px-5 py-2.5 text-invert-fg sm:px-6">
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-invert-fg/50">
+                bay · 01
+              </span>
+              <span className="text-sm font-semibold">Live render studio</span>
             </div>
+            <span className="font-mono text-[11px] text-invert-fg/45">
+              demo · fair-use
+            </span>
+          </div>
 
-            <fieldset className="rounded-xl border border-border bg-bg p-5 shadow-soft">
-              <legend className="px-1 text-sm font-medium text-fg">
-                Sample brand kit
-              </legend>
-
-              <div className="mt-1 flex flex-wrap gap-2">
-                {PRESETS.map((p) => (
-                  <button
-                    key={p.id}
-                    type="button"
-                    onClick={() => applyPreset(p.id)}
-                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
-                      presetId === p.id
-                        ? "border-border-strong bg-fg text-invert-fg"
-                        : "border-border text-fg hover:bg-bg-muted"
-                    }`}
-                  >
-                    {p.label}
-                  </button>
-                ))}
+          <div className="grid gap-6 p-5 sm:p-6 lg:grid-cols-2 lg:gap-8">
+            <div className="flex min-h-[480px] flex-col space-y-5">
+              <div>
+                <label htmlFor="content" className="text-sm font-semibold text-fg">
+                  Content
+                </label>
+                <textarea
+                  id="content"
+                  className="prose-demo mt-2 h-56 w-full resize-y border border-border bg-bg-paper p-4 text-fg focus:border-border-strong"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  spellCheck={false}
+                />
               </div>
 
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                <div>
-                  <label htmlFor="brand-name" className="text-xs font-medium text-fg-muted">
-                    Name
-                  </label>
-                  <input
-                    id="brand-name"
-                    className="mt-1.5 h-10 w-full rounded-lg border border-border px-3 text-sm"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
+              <fieldset className="border border-border bg-bg-paper p-4 sm:p-5">
+                <legend className="px-1 text-sm font-semibold text-fg">
+                  Sample brand kit
+                </legend>
+
+                <div className="mt-1 flex flex-wrap gap-2">
+                  {PRESETS.map((p) => (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => applyPreset(p.id)}
+                      className={`border px-3 py-1.5 text-xs font-semibold transition-colors ${
+                        presetId === p.id
+                          ? "border-border-strong bg-invert-bg text-invert-fg"
+                          : "border-border text-fg hover:bg-bg-muted"
+                      }`}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
                 </div>
-                <div>
-                  <label htmlFor="brand-color" className="text-xs font-medium text-fg-muted">
-                    Primary color (PDF only)
-                  </label>
-                  <div className="mt-1.5 flex items-center gap-2">
+
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="brand-name" className="text-xs font-medium text-fg-muted">
+                      Name
+                    </label>
                     <input
-                      id="brand-color"
-                      type="color"
-                      value={primary}
-                      onChange={(e) => setPrimary(e.target.value)}
-                      className="h-10 w-12 cursor-pointer rounded-lg border border-border bg-bg p-1"
+                      id="brand-name"
+                      className="mt-1.5 h-10 w-full border border-border bg-bg px-3 text-sm"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                     />
+                  </div>
+                  <div>
+                    <label htmlFor="brand-color" className="text-xs font-medium text-fg-muted">
+                      Primary color (PDF only)
+                    </label>
+                    <div className="mt-1.5 flex items-center gap-2">
+                      <input
+                        id="brand-color"
+                        type="color"
+                        value={primary}
+                        onChange={(e) => setPrimary(e.target.value)}
+                        className="h-10 w-11 cursor-pointer border border-border bg-bg p-1"
+                      />
+                      <input
+                        aria-label="Primary color hex"
+                        className="h-10 w-full border border-border bg-bg px-3 font-mono text-sm"
+                        value={primary}
+                        onChange={(e) => setPrimary(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="accent" className="text-xs font-medium text-fg-muted">
+                      Accent style
+                    </label>
+                    <select
+                      id="accent"
+                      className="mt-1.5 h-10 w-full border border-border bg-bg px-3 text-sm"
+                      value={accent}
+                      onChange={(e) =>
+                        setAccent(
+                          e.target.value as "minimal" | "bar" | "left-rule"
+                        )
+                      }
+                    >
+                      <option value="minimal">minimal</option>
+                      <option value="bar">bar</option>
+                      <option value="left-rule">left-rule</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="footer" className="text-xs font-medium text-fg-muted">
+                      Footer text
+                    </label>
                     <input
-                      aria-label="Primary color hex"
-                      className="h-10 w-full rounded-lg border border-border px-3 font-mono text-sm"
-                      value={primary}
-                      onChange={(e) => setPrimary(e.target.value)}
+                      id="footer"
+                      className="mt-1.5 h-10 w-full border border-border bg-bg px-3 text-sm"
+                      value={footer}
+                      onChange={(e) => setFooter(e.target.value)}
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label htmlFor="logo" className="text-xs font-medium text-fg-muted">
+                      Optional logo
+                    </label>
+                    <input
+                      id="logo"
+                      type="file"
+                      accept="image/png,image/jpeg,image/svg+xml,image/webp"
+                      className="mt-1.5 block w-full text-sm text-fg-muted file:mr-3 file:border file:border-border file:bg-bg file:px-3 file:py-1.5 file:text-xs file:font-semibold"
+                      onChange={(e) =>
+                        onLogoChange(e.target.files?.[0] || null)
+                      }
                     />
                   </div>
                 </div>
-                <div>
-                  <label htmlFor="accent" className="text-xs font-medium text-fg-muted">
-                    Accent style
-                  </label>
-                  <select
-                    id="accent"
-                    className="mt-1.5 h-10 w-full rounded-lg border border-border px-3 text-sm"
-                    value={accent}
-                    onChange={(e) =>
-                      setAccent(
-                        e.target.value as "minimal" | "bar" | "left-rule"
-                      )
-                    }
-                  >
-                    <option value="minimal">minimal</option>
-                    <option value="bar">bar</option>
-                    <option value="left-rule">left-rule</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="footer" className="text-xs font-medium text-fg-muted">
-                    Footer text
-                  </label>
-                  <input
-                    id="footer"
-                    className="mt-1.5 h-10 w-full rounded-lg border border-border px-3 text-sm"
-                    value={footer}
-                    onChange={(e) => setFooter(e.target.value)}
-                  />
-                </div>
-                <div className="sm:col-span-2">
-                  <label htmlFor="logo" className="text-xs font-medium text-fg-muted">
-                    Optional logo
-                  </label>
-                  <input
-                    id="logo"
-                    type="file"
-                    accept="image/png,image/jpeg,image/svg+xml,image/webp"
-                    className="mt-1.5 block w-full text-sm text-fg-muted file:mr-3 file:rounded-md file:border file:border-border file:bg-bg file:px-3 file:py-1.5 file:text-xs file:font-medium"
-                    onChange={(e) =>
-                      onLogoChange(e.target.files?.[0] || null)
-                    }
-                  />
-                </div>
-              </div>
-            </fieldset>
+              </fieldset>
 
-            <div className="flex flex-wrap items-center gap-3 pt-1">
-              <button
-                type="button"
-                onClick={generate}
-                disabled={status === "busy"}
-                aria-busy={status === "busy"}
-                className="inline-flex h-11 items-center rounded-lg bg-fg px-6 text-sm font-medium text-invert-fg disabled:opacity-60"
-              >
-                {status === "busy" ? "Generating…" : "Generate PDF"}
-              </button>
-              {remaining !== null && (
-                <span className="text-xs text-fg-muted">
-                  {remaining} demo PDF{remaining === 1 ? "" : "s"} left today
-                </span>
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                <button
+                  type="button"
+                  onClick={generate}
+                  disabled={status === "busy"}
+                  aria-busy={status === "busy"}
+                  className="btn-soft inline-flex h-12 items-center border border-border-strong px-7 text-sm font-bold disabled:opacity-60"
+                >
+                  {status === "busy" ? "Generating…" : "Generate PDF"}
+                </button>
+                {remaining !== null && (
+                  <span className="font-mono text-xs text-fg-muted">
+                    {remaining} demo PDF{remaining === 1 ? "" : "s"} left today
+                  </span>
+                )}
+              </div>
+
+              {message && (
+                <p
+                  role="status"
+                  className={`text-sm leading-relaxed ${
+                    status === "error" || status === "rate_limit"
+                      ? "text-danger"
+                      : "text-fg-muted"
+                  }`}
+                >
+                  {message}
+                </p>
+              )}
+
+              {pdfUrl && status === "ready" && (
+                <div className="flex flex-wrap gap-2">
+                  <a
+                    href={pdfUrl}
+                    download="dynamogic-demo.pdf"
+                    className="inline-flex h-10 items-center border border-border-strong px-5 text-sm font-semibold"
+                  >
+                    Download
+                  </a>
+                  {!staticPreview && (
+                    <button
+                      type="button"
+                      onClick={copySharePlaceholder}
+                      className="inline-flex h-10 items-center border border-border px-4 text-sm font-medium text-fg-muted"
+                    >
+                      Copy share link
+                    </button>
+                  )}
+                </div>
               )}
             </div>
 
-            {message && (
-              <p
-                role="status"
-                className={`text-sm leading-relaxed ${
-                  status === "error" || status === "rate_limit"
-                    ? "text-danger"
-                    : "text-fg-muted"
-                }`}
-              >
-                {message}
-              </p>
-            )}
-
-            {pdfUrl && status === "ready" && (
-              <div className="flex flex-wrap gap-2">
-                <a
-                  href={pdfUrl}
-                  download="dynamogic-demo.pdf"
-                  className="inline-flex h-10 items-center rounded-lg border border-border-strong px-4 text-sm font-medium"
-                >
-                  Download
-                </a>
-                {!staticPreview && (
-                  <button
-                    type="button"
-                    onClick={copySharePlaceholder}
-                    className="inline-flex h-10 items-center rounded-lg border border-border px-4 text-sm font-medium text-fg-muted"
-                  >
-                    Copy share link
-                  </button>
-                )}
+            <div className="flex min-h-[480px] flex-col border border-border bg-bg-paper">
+              <div className="flex items-center justify-between border-b border-border px-4 py-3 sm:px-5">
+                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-fg-muted">
+                  pdf preview
+                </p>
+                <p className="font-mono text-[11px] text-fg-muted">{name}</p>
               </div>
-            )}
-          </div>
-
-          <div className="overflow-hidden rounded-2xl border border-border bg-bg shadow-[0_16px_40px_-28px_rgba(0,0,0,0.45)]">
-            {pdfUrl ? (
-              <object
-                data={pdfUrl}
-                type="application/pdf"
-                className="h-full min-h-[480px] w-full"
-                aria-label="Generated PDF preview"
-              >
-                <iframe
-                  title="Generated PDF preview"
-                  src={pdfUrl}
-                  className="h-full min-h-[480px] w-full"
-                />
-              </object>
-            ) : (
-              <div className="flex min-h-[480px] flex-col justify-center gap-4 p-8">
-                <div
-                  className="mx-auto w-full max-w-sm rounded-xl border border-border bg-bg-muted/40 p-5"
-                  style={{ borderTopWidth: 3, borderTopColor: primary }}
+              {pdfUrl ? (
+                <object
+                  data={pdfUrl}
+                  type="application/pdf"
+                  className="h-full min-h-[420px] w-full flex-1"
+                  aria-label="Generated PDF preview"
                 >
-                  <p
-                    className="text-[10px] font-semibold tracking-wide"
-                    style={{ color: primary }}
+                  <iframe
+                    title="Generated PDF preview"
+                    src={pdfUrl}
+                    className="h-full min-h-[420px] w-full"
+                  />
+                </object>
+              ) : (
+                <div className="flex flex-1 flex-col items-center justify-center gap-5 p-8">
+                  <div
+                    className="w-full max-w-sm border border-border bg-bg p-6 shadow-paper"
+                    style={{ borderLeftWidth: 4, borderLeftColor: primary }}
                   >
-                    {name.toUpperCase()}
-                  </p>
-                  <p className="mt-2 text-sm font-semibold">Live preview frame</p>
-                  <p className="mt-2 text-xs leading-relaxed text-fg-muted">
-                    Generate to load a real PDF here. Brand color appears only
-                    inside this preview — never on site buttons.
-                  </p>
+                    <p
+                      className="text-[11px] font-bold tracking-[0.2em]"
+                      style={{ color: primary }}
+                    >
+                      {name.toUpperCase()}
+                    </p>
+                    <p className="mt-3 text-lg font-extrabold tracking-tight text-fg">
+                      Live preview frame
+                    </p>
+                    <p className="mt-3 text-xs leading-relaxed text-fg-muted">
+                      Generate to load a real PDF here. Brand color appears only
+                      inside this preview — never on site buttons.
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>

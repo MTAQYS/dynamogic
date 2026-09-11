@@ -1,3 +1,7 @@
+"use client";
+
+import { HairlineDraw, Reveal, Stagger, StaggerItem } from "./motion/Reveal";
+
 const features = [
   {
     title: "Brand kits",
@@ -27,23 +31,32 @@ const features = [
 
 export function Features() {
   return (
-    <section id="features" className="mx-auto max-w-6xl px-4 section-pad sm:px-6">
-      <h2 className="text-3xl font-semibold tracking-tight sm:text-[2rem]">
-        Built for humans and agents
-      </h2>
-      <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {features.map((f) => (
-          <article
-            key={f.title}
-            className="rounded-2xl border border-border bg-bg p-6 shadow-soft transition-colors hover:bg-bg-muted/40"
-          >
-            <h3 className="text-[15px] font-semibold tracking-tight text-fg">
-              {f.title}
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-fg-muted">{f.body}</p>
-          </article>
-        ))}
-      </div>
+    <section id="features" className="site-wrap section-pad">
+      <Reveal>
+        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-fg-muted">
+          Capabilities
+        </p>
+        <h2 className="display-xl mt-4 text-[clamp(2rem,4.5vw,3.25rem)] text-fg">
+          Built for humans and agents
+        </h2>
+      </Reveal>
+      <HairlineDraw className="mt-12" />
+      <dl>
+        <Stagger stagger={0.07}>
+          {features.map((f) => (
+            <StaggerItem key={f.title}>
+              <div className="grid gap-2 border-b border-border py-5 sm:grid-cols-2 sm:gap-10 sm:py-6">
+                <dt className="text-lg font-bold tracking-tight text-fg">
+                  {f.title}
+                </dt>
+                <dd className="text-[15px] leading-relaxed text-fg-muted">
+                  {f.body}
+                </dd>
+              </div>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </dl>
     </section>
   );
 }

@@ -4,7 +4,7 @@ import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-sans",
   display: "swap",
 });
 
@@ -15,11 +15,11 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dynamogic — Brand layer for AI output",
+  title: "Dynamogic OS — Brand layer for AI output",
   description:
     "Apply your brand kit to AI-generated content and get shareable PDFs via demo, API, or MCP. Free 3 PDFs/day.",
   openGraph: {
-    title: "Dynamogic — Brand layer for AI output",
+    title: "Dynamogic OS — Brand layer for AI output",
     description:
       "Apply your brand kit to AI-generated content and get shareable PDFs via demo, API, or MCP. Free 3 PDFs/day.",
   },
@@ -32,7 +32,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrains.variable}`}>
-      <body className={`${inter.className} min-h-screen antialiased`}>
+      <body
+        className={`${inter.className} min-h-[100dvh] overflow-hidden antialiased`}
+      >
         {children}
       </body>
     </html>

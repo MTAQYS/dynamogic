@@ -12,6 +12,7 @@
     "export:pages": "npm run build:pages"
   },
   "dependencies": {
+    "framer-motion": "^11.18.2",
     "marked": "^15.0.7",
     "next": "^15.2.4",
     "playwright": "^1.51.1",
