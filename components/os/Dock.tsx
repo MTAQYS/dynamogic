@@ -80,7 +80,7 @@ export function Dock() {
   if (isMobile) {
     return (
       <nav
-        className="fixed inset-x-0 bottom-0 z-[90] border-t border-border/50 bg-bg-paper/80 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_32px_rgba(42,42,40,0.06)] backdrop-blur-2xl backdrop-saturate-150"
+        className="fixed inset-x-0 bottom-0 z-[90] border-t border-border/50 bg-bg-paper/92 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 shadow-soft backdrop-blur-md"
         aria-label="Apps"
       >
         <AnimatePresence>
@@ -206,7 +206,7 @@ export function Dock() {
       className="pointer-events-none absolute inset-x-0 bottom-5 z-[90] flex justify-center"
       aria-label="Dock"
     >
-      <div className="pointer-events-auto rounded-[22px] border border-white/50 bg-bg-paper/60 p-[5px] shadow-[0_8px_40px_rgba(42,42,40,0.10),0_0_0_0.5px_rgba(42,42,40,0.06),inset_0_1px_0_rgba(255,255,255,0.65)] backdrop-blur-2xl backdrop-saturate-150">
+      <div className="pointer-events-auto rounded-[22px] border border-border/70 bg-bg-paper/85 p-[5px] shadow-paper backdrop-blur-md">
         <ul
           ref={listRef}
           className="flex items-end gap-2 px-1.5 pb-1 pt-1.5"

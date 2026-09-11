@@ -5,82 +5,124 @@ import { useCallback, useEffect, useState } from "react";
 import { Logo } from "../Logo";
 import { usePrefersReducedMotion } from "../motion/usePrefersReducedMotion";
 import { useWindows } from "./WindowContext";
-import type { AppId } from "./types";
 
-const DISMISS_KEY = "dynamogic-os-guide-dismissed";
+const MISSION_KEY = "dynamogic-os-mission";
+const EASE = [0.22, 1, 0.36, 1] as const;
 
-type Tip = {
-  id: string;
-  label: string;
-  appId: AppId;
-};
+type StepId = "open_demo" | "generate_pdf" | "open_brand" | "done";
 
-const TIPS: Tip[] = [
-  { id: "demo", label: "Open Demo", appId: "demo" },
-  { id: "brand", label: "Set Brand Kit", appId: "brand" },
+const STEPS: { id: StepId; title: string; body: string; cta?: string }[] = [
+  {
+    id: "open_demo",
+    title: "Mission 1 · Open Demo",
+    body: "Open Demo to brand a PDF.",
+    cta: "Open Demo",
+  },
+  {
+    id: "generate_pdf",
+    title: "Mission 2 · Generate a PDF",
+    body: "Hit Generate PDF in Demo. You’re free to explore meanwhile.",
+  },
+  {
+    id: "open_brand",
+    title: "Mission 3 · Open Brand Kit",
+    body: "Tweak the kit — color stays inside the PDF.",
+    cta: "Open Brand Kit",
+  },
+  {
+    id: "done",
+    title: "You’re cleared",
+    body: "First PDF path unlocked. Falcon out.",
+  },
 ];
 
+function readMission(): StepId | "skipped" {
+  try {
+    const v = localStorage.getItem(MISSION_KEY);
+    if (v === "skipped" || v === "done") return v === "skipped" ? "skipped" : "done";
+    if (v === "open_demo" || v === "generate_pdf" || v === "open_brand") return v;
+  } catch {
+    /* ignore */
+  }
+  return "open_demo";
+}
+
+function writeMission(step: StepId | "skipped") {
+  try {
+    localStorage.setItem(MISSION_KEY, step === "done" ? "done" : step);
+  } catch {
+    /* ignore */
+  }
+}
+
 /**
- * Small M2h guide falcon parked near the dock / mobile app bar.
- * Tips open apps via WindowContext.openApp (same as dock icons).
+ * Light first-run mission near the dock. z under windows. Skip anytime.
+ * Never blocks Generate or nav.
  */
 export function GuideFalcon() {
-  const { openApp, isMobile, focusedId } = useWindows();
+  const { openApp, isMobile, focusedId, windows } = useWindows();
   const reduced = usePrefersReducedMotion();
-  const [tipsOpen, setTipsOpen] = useState(true);
   const [hydrated, setHydrated] = useState(false);
+  const [step, setStep] = useState<StepId | "skipped">("open_demo");
+  const [panelOpen, setPanelOpen] = useState(true);
 
   useEffect(() => {
-    try {
-      if (localStorage.getItem(DISMISS_KEY) === "1") {
-        setTipsOpen(false);
-      }
-    } catch {
-      /* ignore */
-    }
+    const initial = readMission();
+    setStep(initial);
+    setPanelOpen(initial !== "skipped" && initial !== "done");
     setHydrated(true);
   }, []);
 
-  const persistDismiss = useCallback(() => {
-    try {
-      localStorage.setItem(DISMISS_KEY, "1");
-    } catch {
-      /* ignore */
+  const advanceTo = useCallback((next: StepId) => {
+    setStep(next);
+    writeMission(next);
+    if (next === "done") {
+      setPanelOpen(true);
     }
   }, []);
 
-  const clearDismiss = useCallback(() => {
-    try {
-      localStorage.removeItem(DISMISS_KEY);
-    } catch {
-      /* ignore */
-    }
+  const skip = useCallback(() => {
+    setStep("skipped");
+    writeMission("skipped");
+    setPanelOpen(false);
   }, []);
 
-  const dismissTips = useCallback(() => {
-    setTipsOpen(false);
-    persistDismiss();
-  }, [persistDismiss]);
+  // Auto-advance: open Demo / Brand from any chrome
+  useEffect(() => {
+    if (!hydrated || step === "skipped" || step === "done") return;
+    const openIds = new Set(windows.map((w) => w.id));
+    if (step === "open_demo" && openIds.has("demo")) {
+      advanceTo("generate_pdf");
+    } else if (step === "open_brand" && openIds.has("brand")) {
+      advanceTo("done");
+    }
+  }, [windows, step, hydrated, advanceTo]);
 
-  const toggleTips = useCallback(() => {
-    setTipsOpen((prev) => {
-      const next = !prev;
-      if (next) clearDismiss();
-      else persistDismiss();
-      return next;
-    });
-  }, [clearDismiss, persistDismiss]);
+  // Auto-advance: PDF generated (DemoApp dispatches)
+  useEffect(() => {
+    if (!hydrated) return;
+    const onMission = (e: Event) => {
+      const detail = (e as CustomEvent<string>).detail;
+      if (detail === "generate_pdf" && step === "generate_pdf") {
+        advanceTo("open_brand");
+      } else if (detail === "open_demo" && step === "open_demo") {
+        advanceTo("generate_pdf");
+      } else if (detail === "open_brand" && step === "open_brand") {
+        advanceTo("done");
+      }
+    };
+    window.addEventListener("dynamogic-mission", onMission);
+    return () => window.removeEventListener("dynamogic-mission", onMission);
+  }, [hydrated, step, advanceTo]);
 
-  const onTip = useCallback(
-    (tip: Tip) => {
-      openApp(tip.appId);
-    },
-    [openApp]
-  );
-
-  // Hide under mobile fullscreen sheets so we never block them
   if (isMobile && focusedId) return null;
   if (!hydrated) return null;
+  if (step === "skipped") return null;
+  // First-run only: after dismiss / hydrate with done, hide falcon entirely
+  if (step === "done" && !panelOpen) return null;
+
+  const current = STEPS.find((s) => s.id === step) ?? STEPS[0];
+  const stepIndex = STEPS.findIndex((s) => s.id === step);
 
   return (
     <div
@@ -93,74 +135,69 @@ export function GuideFalcon() {
     >
       <div className="relative flex flex-col items-end gap-2">
         <AnimatePresence>
-          {tipsOpen && (
+          {panelOpen && (
             <motion.div
-              className="pointer-events-auto flex flex-col items-end gap-1.5"
-              initial={reduced ? false : { opacity: 0, y: 8, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={reduced ? undefined : { opacity: 0, y: 6, scale: 0.96 }}
+              className="pointer-events-auto w-[220px] rounded-xl border border-border/80 bg-bg-paper p-3.5 text-left shadow-paper"
+              initial={reduced ? false : { opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduced ? undefined : { opacity: 0, y: 4 }}
               transition={
-                reduced
-                  ? { duration: 0 }
-                  : { duration: 0.2, ease: [0.22, 1, 0.36, 1] }
+                reduced ? { duration: 0 } : { duration: 0.18, ease: EASE }
               }
             >
-              <div className="flex items-center gap-1.5">
-                <p className="pr-1 text-[10px] font-medium uppercase tracking-[0.16em] text-fg-muted">
-                  Guide
+              <div className="flex items-start justify-between gap-2">
+                <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-fg-muted">
+                  {step === "done" ? "Mission" : `Step ${Math.min(stepIndex + 1, 3)} / 3`}
                 </p>
                 <button
                   type="button"
-                  onClick={dismissTips}
-                  className="flex h-5 w-5 items-center justify-center rounded-full text-[10px] text-fg-muted/80 transition-colors hover:bg-fg/[0.06] hover:text-fg"
-                  aria-label="Dismiss guide tips"
+                  onClick={skip}
+                  className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-[11px] font-medium text-fg-muted transition-colors hover:bg-fg/[0.05] hover:text-fg sm:min-h-0 sm:min-w-0 sm:h-6 sm:w-auto sm:px-1.5"
+                  aria-label="Skip mission"
                 >
-                  ✕
+                  Skip
                 </button>
               </div>
-
-              {TIPS.map((tip, i) => (
-                <motion.button
-                  key={tip.id}
+              <p className="mt-2 text-[13px] font-semibold tracking-tight text-fg">
+                {current.title}
+              </p>
+              <p className="mt-1 text-[12px] leading-relaxed text-fg-muted">
+                {current.body}
+              </p>
+              {current.cta && step !== "done" && (
+                <button
                   type="button"
-                  onClick={() => onTip(tip)}
-                  className="group relative max-w-[200px] rounded-2xl rounded-br-md border border-border/70 bg-bg-paper/90 px-3.5 py-2 text-left shadow-[0_8px_28px_rgba(42,42,40,0.08),0_0_0_0.5px_rgba(42,42,40,0.04),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl transition-colors hover:bg-bg-paper"
-                  initial={reduced ? false : { opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={
-                    reduced
-                      ? { duration: 0 }
-                      : {
-                          delay: 0.04 + i * 0.05,
-                          duration: 0.2,
-                          ease: [0.22, 1, 0.36, 1],
-                        }
-                  }
-                  aria-label={`${tip.label} — open app`}
+                  onClick={() => {
+                    if (step === "open_demo") openApp("demo");
+                    if (step === "open_brand") openApp("brand");
+                  }}
+                  className="btn-soft mt-3 inline-flex min-h-[44px] items-center rounded-xl px-3.5 text-[12px] font-semibold tracking-tight sm:min-h-[36px]"
                 >
-                  <span className="block text-[12.5px] font-semibold tracking-tight text-fg">
-                    {tip.label}
-                  </span>
-                  <span className="mt-0.5 block text-[10.5px] font-medium text-fg-muted">
-                    Tap to open
-                  </span>
-                </motion.button>
-              ))}
+                  {current.cta}
+                </button>
+              )}
+              {step === "done" && (
+                <button
+                  type="button"
+                  onClick={skip}
+                  className="mt-3 inline-flex min-h-[44px] items-center rounded-xl border border-border px-3.5 text-[12px] font-semibold tracking-tight text-fg transition-colors hover:bg-bg-muted sm:min-h-[36px]"
+                >
+                  Dismiss
+                </button>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
 
         <motion.button
           type="button"
-          onClick={toggleTips}
-          className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-border/60 bg-bg-paper/85 shadow-[0_4px_16px_rgba(42,42,40,0.08),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl transition-transform hover:scale-[1.04] active:scale-[0.96]"
-          aria-label={tipsOpen ? "Hide guide tips" : "Show guide tips"}
-          aria-expanded={tipsOpen}
+          onClick={() => setPanelOpen((v) => !v)}
+          className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-bg-paper shadow-soft transition-transform active:scale-[0.96]"
+          aria-label={panelOpen ? "Hide mission" : "Show mission"}
+          aria-expanded={panelOpen}
           whileTap={reduced ? undefined : { scale: 0.94 }}
         >
-          <span className="opacity-90">
-            <Logo variant="mark" size={18} />
-          </span>
+          <Logo variant="mark" size={18} />
         </motion.button>
       </div>
     </div>

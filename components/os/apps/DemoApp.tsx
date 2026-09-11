@@ -80,6 +80,13 @@ export function DemoApp() {
       setMessage(
         "PDF ready — (Pages preview uses a sample PDF; live render on local/Vercel.)"
       );
+      try {
+        window.dispatchEvent(
+          new CustomEvent("dynamogic-mission", { detail: "generate_pdf" })
+        );
+      } catch {
+        /* ignore */
+      }
       return;
     }
 
@@ -121,6 +128,13 @@ export function DemoApp() {
       );
       setStatus("ready");
       setMessage("PDF ready — Download");
+      try {
+        window.dispatchEvent(
+          new CustomEvent("dynamogic-mission", { detail: "generate_pdf" })
+        );
+      } catch {
+        /* ignore */
+      }
     } catch {
       setStatus("error");
       setMessage(
@@ -326,7 +340,7 @@ export function DemoApp() {
                 </p>
                 <p className="mt-2 text-[11px] leading-relaxed text-fg-muted">
                   Generate a PDF to preview here. Brand color stays inside the
-                  document — never on OS chrome.
+                  document — never on product chrome.
                 </p>
               </div>
             </div>

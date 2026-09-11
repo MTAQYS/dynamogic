@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --bg: #f7f6f3;
-  --bg-muted: #f0eee9;
-  --bg-paper: #fffefb;
+  --bg: #fafaf8;
+  --bg-muted: #f4f3f0;
+  --bg-paper: #ffffff;
   --fg: #1a1a1a;
-  --fg-muted: #525250;
-  --border: #e8e6e1;
+  --fg-muted: #5c5c58;
+  --border: #eae9e4;
   --border-strong: #2a2a28;
   --invert-bg: #2a2a28;
-  --invert-fg: #f7f6f3;
+  --invert-fg: #fafaf8;
   --focus: #1a1a1a;
   --danger: #b91c1c;
   --success: #166534;
@@ -74,12 +74,12 @@ body {
     radial-gradient(
       ellipse 85% 65% at 50% 40%,
       transparent 0%,
-      rgba(42, 42, 40, 0.015) 50%,
-      rgba(42, 42, 40, 0.07) 100%
+      rgba(42, 42, 40, 0.009) 50%,
+      rgba(42, 42, 40, 0.042) 100%
     ),
     radial-gradient(
       ellipse 50% 40% at 80% 90%,
-      rgba(42, 42, 40, 0.04) 0%,
+      rgba(42, 42, 40, 0.024) 0%,
       transparent 70%
     );
 }

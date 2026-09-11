@@ -43,7 +43,7 @@ export function MenuBar() {
   }
 
   return (
-    <header className="relative z-[200] flex h-7 shrink-0 items-center justify-between border-b border-white/40 bg-bg-paper/55 px-3 text-[12px] shadow-[0_1px_0_rgba(42,42,40,0.04)] backdrop-blur-2xl backdrop-saturate-150">
+    <header className="relative z-[200] flex h-7 shrink-0 items-center justify-between border-b border-border/60 bg-bg-paper/90 px-3 text-[12px] shadow-soft backdrop-blur-md">
       <nav className="flex items-center gap-0.5" aria-label="Menu bar">
         <button
           type="button"
@@ -139,7 +139,7 @@ function Dropdown({
 }) {
   return (
     <div
-      className="absolute top-7 z-[210] min-w-[188px] overflow-hidden rounded-xl border border-border/80 bg-bg-paper/92 py-1.5 shadow-[0_12px_40px_rgba(42,42,40,0.12),0_0_0_0.5px_rgba(42,42,40,0.06)] backdrop-blur-2xl"
+      className="absolute top-7 z-[210] min-w-[188px] overflow-hidden rounded-xl border border-border/80 bg-bg-paper py-1.5 shadow-paper backdrop-blur-md"
       style={{ left }}
       onClick={(e) => e.stopPropagation()}
     >

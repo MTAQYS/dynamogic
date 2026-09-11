@@ -8,15 +8,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#F7F6F3",
-        "bg-muted": "#F0EEE9",
-        "bg-paper": "#FFFEFB",
+        bg: "#FAFAF8",
+        "bg-muted": "#F4F3F0",
+        "bg-paper": "#FFFFFF",
         fg: "#1A1A1A",
-        "fg-muted": "#525250",
-        border: "#E8E6E1",
+        "fg-muted": "#5C5C58",
+        border: "#EAE9E4",
         "border-strong": "#2A2A28",
         "invert-bg": "#2A2A28",
-        "invert-fg": "#F7F6F3",
+        "invert-fg": "#FAFAF8",
         danger: "#B91C1C",
         success: "#166534",
       },
@@ -34,8 +34,8 @@ const config: Config = {
         full: "9999px",
       },
       boxShadow: {
-        soft: "0 1px 2px rgb(42 42 40 / 5%)",
-        paper: "0 8px 32px rgb(42 42 40 / 8%)",
+        soft: "0 1px 2px rgb(26 26 26 / 6%)",
+        paper: "0 8px 24px rgb(26 26 26 / 6%)",
         bay: "0 0 0 1px #2A2A28, 0 24px 64px rgb(42 42 40 / 10%)",
         billboard: "0 32px 80px -16px rgb(42 42 40 / 28%)",
       },

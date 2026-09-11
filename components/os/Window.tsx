@@ -192,8 +192,8 @@ export function OsWindow({ win, children }: Props) {
         zIndex: win.z,
         border: "0.5px solid rgba(42,42,40,0.12)",
         boxShadow: focused
-          ? "0 28px 72px -12px rgba(42,42,40,0.22), 0 12px 28px -8px rgba(42,42,40,0.10), 0 0 0 0.5px rgba(42,42,40,0.06)"
-          : "0 16px 48px -12px rgba(42,42,40,0.12), 0 6px 16px -4px rgba(42,42,40,0.06), 0 0 0 0.5px rgba(42,42,40,0.04)",
+          ? "0 8px 24px rgba(26,26,26,0.10), 0 0 0 0.5px rgba(26,26,26,0.06)"
+          : "0 1px 2px rgba(26,26,26,0.06), 0 0 0 0.5px rgba(26,26,26,0.04)",
       }}
       initial={reduced ? false : { opacity: 0, y: 6 }}
       animate={{

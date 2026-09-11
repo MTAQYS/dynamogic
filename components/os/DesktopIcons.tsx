@@ -40,7 +40,7 @@ export function DesktopIcons() {
               }`}
             >
               <span
-                className="flex h-[52px] w-[52px] items-center justify-center rounded-[14px] border border-border/50 bg-bg-paper/85 shadow-[0_2px_8px_rgba(42,42,40,0.05),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md transition-transform duration-200 group-hover:scale-[1.04]"
+                className="flex h-[52px] w-[52px] items-center justify-center rounded-[14px] border border-border/50 bg-bg-paper shadow-[0_2px_8px_rgba(42,42,40,0.05),inset_0_1px_0_rgba(255,255,255,0.7)]  transition-transform duration-200 group-hover:scale-[1.04]"
                 aria-hidden
               >
                 <AppIcon id={id} size={24} />
