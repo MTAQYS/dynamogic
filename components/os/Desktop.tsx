@@ -42,7 +42,7 @@ function AppContent({ id }: { id: AppId }) {
 }
 
 function DesktopInner() {
-  const { windows, setIsMobile, focusedId, closeApp, blurFocus } = useWindows();
+  const { windows, setIsMobile, focusedId, blurFocus } = useWindows();
   const [booted, setBooted] = useState(false);
 
   useEffect(() => {
@@ -56,12 +56,12 @@ function DesktopInner() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape" && focusedId) {
-        closeApp(focusedId);
+        blurFocus();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [closeApp, focusedId]);
+  }, [blurFocus, focusedId]);
 
   const onBootDone = useCallback(() => setBooted(true), []);
 
@@ -70,7 +70,6 @@ function DesktopInner() {
       <BootSplash onDone={onBootDone} />
       <MenuBar />
       <div className="relative min-h-0 flex-1">
-        {/* Wallpaper + click-outside to soft-unfocus */}
         <div
           className="absolute inset-0 z-0"
           onMouseDown={() => blurFocus()}
@@ -80,8 +79,10 @@ function DesktopInner() {
         </div>
         {booted && (
           <>
+            {/* Desktop chrome under windows (z < 10; windows start at z=10) */}
             <DesktopIcons />
             <StickyNote />
+            <GuideFalcon />
             <AnimatePresence>
               {windows.map((win) => (
                 <OsWindow key={win.id} win={win}>
@@ -89,7 +90,6 @@ function DesktopInner() {
                 </OsWindow>
               ))}
             </AnimatePresence>
-            <GuideFalcon />
             <Dock />
           </>
         )}

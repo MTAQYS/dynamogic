@@ -84,7 +84,7 @@ export function GuideFalcon() {
 
   return (
     <div
-      className={`pointer-events-none absolute z-[85] ${
+      className={`pointer-events-none absolute z-[5] ${
         isMobile
           ? "bottom-[calc(4.75rem+env(safe-area-inset-bottom))] right-3"
           : "bottom-[5.75rem] right-[max(1.25rem,calc(50%-280px))]"
@@ -102,17 +102,17 @@ export function GuideFalcon() {
               transition={
                 reduced
                   ? { duration: 0 }
-                  : { type: "spring", stiffness: 380, damping: 28 }
+                  : { duration: 0.2, ease: [0.22, 1, 0.36, 1] }
               }
             >
               <div className="flex items-center gap-1.5">
-                <p className="pr-1 text-[10px] font-medium uppercase tracking-[0.16em] text-fg-muted/70">
+                <p className="pr-1 text-[10px] font-medium uppercase tracking-[0.16em] text-fg-muted">
                   Guide
                 </p>
                 <button
                   type="button"
                   onClick={dismissTips}
-                  className="flex h-5 w-5 items-center justify-center rounded-full text-[10px] text-fg-muted/55 transition-colors hover:bg-fg/[0.06] hover:text-fg"
+                  className="flex h-5 w-5 items-center justify-center rounded-full text-[10px] text-fg-muted/80 transition-colors hover:bg-fg/[0.06] hover:text-fg"
                   aria-label="Dismiss guide tips"
                 >
                   ✕
@@ -131,10 +131,9 @@ export function GuideFalcon() {
                     reduced
                       ? { duration: 0 }
                       : {
-                          delay: 0.06 + i * 0.07,
-                          type: "spring",
-                          stiffness: 360,
-                          damping: 26,
+                          delay: 0.04 + i * 0.05,
+                          duration: 0.2,
+                          ease: [0.22, 1, 0.36, 1],
                         }
                   }
                   aria-label={`${tip.label} — open app`}

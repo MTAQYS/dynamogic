@@ -17,7 +17,8 @@ type Props = {
   children: ReactNode;
 };
 
-const SPRING = { type: "spring" as const, stiffness: 380, damping: 34, mass: 0.85 };
+const EASE = [0.22, 1, 0.36, 1] as const;
+const CHROME = { duration: 0.2, ease: EASE };
 
 export function OsWindow({ win, children }: Props) {
   const {
@@ -25,15 +26,23 @@ export function OsWindow({ win, children }: Props) {
     focusApp,
     closeApp,
     minimizeApp,
+    blurFocus,
     moveWindow,
     resizeWindow,
     isMobile,
   } = useWindows();
   const reduced = usePrefersReducedMotion();
   const focused = focusedId === win.id;
+  const frameRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
   const resizing = useRef(false);
   const origin = useRef({ x: 0, y: 0, wx: 0, wy: 0, ww: 0, wh: 0 });
+  const live = useRef({ x: win.x, y: win.y, w: win.width, h: win.height });
+
+  useEffect(() => {
+    if (dragging.current || resizing.current) return;
+    live.current = { x: win.x, y: win.y, w: win.width, h: win.height };
+  }, [win.x, win.y, win.width, win.height]);
 
   const onDragStart = useCallback(
     (e: ReactPointerEvent) => {
@@ -48,28 +57,31 @@ export function OsWindow({ win, children }: Props) {
         ww: win.width,
         wh: win.height,
       };
+      live.current = { x: win.x, y: win.y, w: win.width, h: win.height };
       (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
       focusApp(win.id);
     },
     [focusApp, isMobile, win.height, win.id, win.width, win.x, win.y]
   );
 
-  const onDragMove = useCallback(
-    (e: ReactPointerEvent) => {
-      if (!dragging.current) return;
-      const dx = e.clientX - origin.current.x;
-      const dy = e.clientY - origin.current.y;
-      const maxY = Math.max(40, window.innerHeight - 80);
-      const nextY = Math.min(maxY, Math.max(28, origin.current.wy + dy));
-      const nextX = origin.current.wx + dx;
-      moveWindow(win.id, nextX, nextY);
-    },
-    [moveWindow, win.id]
-  );
+  const onDragMove = useCallback((e: ReactPointerEvent) => {
+    if (!dragging.current || !frameRef.current) return;
+    const dx = e.clientX - origin.current.x;
+    const dy = e.clientY - origin.current.y;
+    const maxY = Math.max(40, window.innerHeight - 80);
+    const nextY = Math.min(maxY, Math.max(28, origin.current.wy + dy));
+    const nextX = origin.current.wx + dx;
+    live.current.x = nextX;
+    live.current.y = nextY;
+    frameRef.current.style.transform = `translate3d(${nextX - win.x}px, ${nextY - win.y}px, 0)`;
+  }, [win.x, win.y]);
 
   const onDragEnd = useCallback(() => {
+    if (!dragging.current) return;
     dragging.current = false;
-  }, []);
+    if (frameRef.current) frameRef.current.style.transform = "";
+    moveWindow(win.id, live.current.x, live.current.y);
+  }, [moveWindow, win.id]);
 
   const onResizeStart = useCallback(
     (e: ReactPointerEvent) => {
@@ -84,6 +96,7 @@ export function OsWindow({ win, children }: Props) {
         ww: win.width,
         wh: win.height,
       };
+      live.current = { x: win.x, y: win.y, w: win.width, h: win.height };
       (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
       focusApp(win.id);
     },
@@ -92,26 +105,42 @@ export function OsWindow({ win, children }: Props) {
 
   const onResizeMove = useCallback(
     (e: ReactPointerEvent) => {
-      if (!resizing.current) return;
+      if (!resizing.current || !frameRef.current) return;
       const dx = e.clientX - origin.current.x;
       const dy = e.clientY - origin.current.y;
-      resizeWindow(win.id, origin.current.ww + dx, origin.current.wh + dy);
+      const nextW = Math.max(320, origin.current.ww + dx);
+      const nextH = Math.max(240, origin.current.wh + dy);
+      live.current.w = nextW;
+      live.current.h = nextH;
+      const sx = nextW / origin.current.ww;
+      const sy = nextH / origin.current.wh;
+      frameRef.current.style.transformOrigin = "top left";
+      frameRef.current.style.transform = `scale(${sx}, ${sy})`;
     },
-    [resizeWindow, win.id]
+    []
   );
 
   const onResizeEnd = useCallback(() => {
+    if (!resizing.current) return;
     resizing.current = false;
-  }, []);
+    if (frameRef.current) {
+      frameRef.current.style.transform = "";
+      frameRef.current.style.transformOrigin = "";
+    }
+    resizeWindow(win.id, live.current.w, live.current.h);
+  }, [resizeWindow, win.id]);
 
   useEffect(() => {
     if (!focused) return;
     const onKey = (ev: KeyboardEvent) => {
-      if (ev.key === "Escape") closeApp(win.id);
+      if (ev.key === "Escape") {
+        ev.stopPropagation();
+        blurFocus();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [closeApp, focused, win.id]);
+  }, [blurFocus, focused]);
 
   if (win.minimized && !isMobile) return null;
 
@@ -120,14 +149,13 @@ export function OsWindow({ win, children }: Props) {
     return (
       <motion.div
         className="fixed inset-0 z-[100] flex flex-col bg-bg-paper"
-        initial={reduced ? false : { y: "100%" }}
-        animate={{ y: 0 }}
-        exit={reduced ? undefined : { y: "100%" }}
-        transition={reduced ? { duration: 0 } : SPRING}
+        initial={reduced ? false : { opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={reduced ? undefined : { opacity: 0, y: 8 }}
+        transition={reduced ? { duration: 0 } : CHROME}
         role="dialog"
         aria-label={win.title}
       >
-        {/* Premium sheet chrome */}
         <div className="flex shrink-0 flex-col border-b border-border/70 bg-bg-paper/95 backdrop-blur-xl">
           <div className="flex justify-center pt-2 pb-1" aria-hidden>
             <span className="h-1 w-9 rounded-full bg-fg/15" />
@@ -154,7 +182,8 @@ export function OsWindow({ win, children }: Props) {
 
   return (
     <motion.div
-      className="absolute flex flex-col overflow-hidden rounded-2xl bg-bg-paper"
+      ref={frameRef}
+      className="absolute flex flex-col overflow-hidden rounded-2xl bg-bg-paper will-change-transform"
       style={{
         left: win.x,
         top: win.y,
@@ -166,14 +195,13 @@ export function OsWindow({ win, children }: Props) {
           ? "0 28px 72px -12px rgba(42,42,40,0.22), 0 12px 28px -8px rgba(42,42,40,0.10), 0 0 0 0.5px rgba(42,42,40,0.06)"
           : "0 16px 48px -12px rgba(42,42,40,0.12), 0 6px 16px -4px rgba(42,42,40,0.06), 0 0 0 0.5px rgba(42,42,40,0.04)",
       }}
-      initial={reduced ? false : { opacity: 0, scale: 0.96, y: 10 }}
+      initial={reduced ? false : { opacity: 0, y: 6 }}
       animate={{
         opacity: focused ? 1 : 0.92,
-        scale: 1,
         y: 0,
       }}
-      exit={reduced ? undefined : { opacity: 0, scale: 0.97, y: 8 }}
-      transition={reduced ? { duration: 0 } : SPRING}
+      exit={reduced ? undefined : { opacity: 0, y: 6 }}
+      transition={reduced ? { duration: 0 } : CHROME}
       onMouseDown={() => focusApp(win.id)}
       role="dialog"
       aria-label={win.title}

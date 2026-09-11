@@ -12,7 +12,7 @@ const config: Config = {
         "bg-muted": "#F0EEE9",
         "bg-paper": "#FFFEFB",
         fg: "#1A1A1A",
-        "fg-muted": "#6B6B66",
+        "fg-muted": "#525250",
         border: "#E8E6E1",
         "border-strong": "#2A2A28",
         "invert-bg": "#2A2A28",

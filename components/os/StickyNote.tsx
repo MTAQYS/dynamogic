@@ -34,13 +34,13 @@ export function StickyNote() {
 
   return (
     <motion.aside
-      className="absolute right-10 top-14 z-20 w-[208px] origin-top-right"
+      className="absolute right-10 top-14 z-[5] w-[208px] origin-top-right"
       initial={reduced ? false : { opacity: 0, y: -10, rotate: 4 }}
       animate={{ opacity: 1, y: 0, rotate: 1.5 }}
       transition={
         reduced
           ? { duration: 0 }
-          : { type: "spring", stiffness: 220, damping: 26, mass: 0.9, delay: 0.55 }
+          : { duration: 0.2, ease: [0.22, 1, 0.36, 1], delay: 0.35 }
       }
       aria-label="Welcome note"
     >

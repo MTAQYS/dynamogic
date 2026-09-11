@@ -80,7 +80,7 @@ export function WindowProvider({ children }: { children: ReactNode }) {
       ];
     });
     setBounceId(id);
-    window.setTimeout(() => setBounceId(null), 520);
+    window.setTimeout(() => setBounceId(null), 220);
   }, []);
 
   const closeApp = useCallback((id: AppId) => {

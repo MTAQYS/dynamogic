@@ -15,7 +15,7 @@ export function DesktopIcons() {
 
   return (
     <ul
-      className="absolute left-3 top-10 z-10 flex flex-col gap-1"
+      className="absolute left-3 top-10 z-[5] flex flex-col gap-1"
       aria-label="Desktop icons"
     >
       {ICONS.map((id) => {
@@ -25,13 +25,15 @@ export function DesktopIcons() {
           <li key={id}>
             <button
               type="button"
+              title={meta.label}
+              aria-label={meta.label}
               onClick={(e) => {
                 e.stopPropagation();
                 setSelected(id);
                 openApp(id);
               }}
               onDoubleClick={() => openApp(id)}
-              className={`group flex w-[84px] flex-col items-center gap-1.5 rounded-xl px-2 py-2.5 text-center transition-colors ${
+              className={`group flex w-[92px] flex-col items-center gap-1.5 rounded-xl px-2 py-2.5 text-center transition-colors ${
                 isSelected
                   ? "bg-fg/[0.07] ring-1 ring-fg/[0.06]"
                   : "hover:bg-fg/[0.035]"
@@ -44,10 +46,8 @@ export function DesktopIcons() {
                 <AppIcon id={id} size={24} />
               </span>
               <span
-                className={`max-w-full truncate rounded-md px-1.5 py-0.5 text-[11px] font-medium leading-tight tracking-tight ${
-                  isSelected
-                    ? "bg-fg/80 text-invert-fg"
-                    : "text-fg/90"
+                className={`max-w-full whitespace-normal break-words rounded-md px-1 py-0.5 text-[11px] font-medium leading-tight tracking-tight ${
+                  isSelected ? "bg-fg/80 text-invert-fg" : "text-fg/90"
                 }`}
               >
                 {meta.label}
