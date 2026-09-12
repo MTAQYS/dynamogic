@@ -6,7 +6,8 @@ export type AppId =
   | "faq"
   | "about"
   | "how"
-  | "signin";
+  | "signin"
+  | "bepro";
 
 export type WindowState = {
   id: AppId;
@@ -43,6 +44,11 @@ export const APP_META: Record<
     title: "Brand Kit.app",
     label: "Brand Kit",
     defaultSize: { w: 520, h: 560 },
+  },
+  bepro: {
+    title: "BePro.app",
+    label: "BePro",
+    defaultSize: { w: 480, h: 520 },
   },
   mcp: {
     title: "MCP Terminal.app",

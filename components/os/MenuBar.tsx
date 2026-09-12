@@ -154,6 +154,7 @@ export function MenuBar() {
         <Dropdown left={128}>
           <MenuItem onClick={() => open("demo")}>Demo</MenuItem>
           <MenuItem onClick={() => open("brand")}>Brand Kit</MenuItem>
+          <MenuItem onClick={() => open("bepro")}>BePro</MenuItem>
           <MenuItem onClick={() => open("mcp")}>MCP Terminal</MenuItem>
           <MenuItem onClick={() => open("pricing")}>Pricing</MenuItem>
           <MenuItem onClick={() => open("faq")}>FAQ</MenuItem>

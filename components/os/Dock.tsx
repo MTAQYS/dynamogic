@@ -11,6 +11,7 @@ import { PREF_COMPACT_DOCK, readPref } from "./osPrefs";
 const DOCK_APPS: AppId[] = [
   "demo",
   "brand",
+  "bepro",
   "mcp",
   "pricing",
   "faq",
@@ -18,8 +19,8 @@ const DOCK_APPS: AppId[] = [
   "about",
 ];
 
-const MOBILE_PRIMARY: AppId[] = ["demo", "brand", "mcp", "pricing", "faq"];
-const MOBILE_MORE: AppId[] = ["how", "about"];
+const MOBILE_PRIMARY: AppId[] = ["demo", "brand", "bepro", "pricing", "faq"];
+const MOBILE_MORE: AppId[] = ["mcp", "how", "about"];
 
 const BASE_FULL = 48;
 const BASE_COMPACT = 40;

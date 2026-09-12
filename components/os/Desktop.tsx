@@ -12,6 +12,7 @@ import { Wallpaper } from "./Wallpaper";
 import { WindowProvider, useWindows } from "./WindowContext";
 import { OsWindow } from "./Window";
 import { AboutApp } from "./apps/AboutApp";
+import { BeProApp } from "./apps/BeProApp";
 import { BrandKitApp } from "./apps/BrandKitApp";
 import { DemoApp } from "./apps/DemoApp";
 import { FaqApp } from "./apps/FaqApp";
@@ -27,6 +28,8 @@ function AppContent({ id }: { id: AppId }) {
       return <DemoApp />;
     case "brand":
       return <BrandKitApp />;
+    case "bepro":
+      return <BeProApp />;
     case "mcp":
       return <McpTerminalApp />;
     case "pricing":

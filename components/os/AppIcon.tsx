@@ -42,6 +42,14 @@ export function AppIcon({ id, size = 22, className = "" }: Props) {
           <path d="M12 4v2.5M12 17.5V20M4 12h2.5M17.5 12H20" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
         </svg>
       );
+    case "bepro":
+      return (
+        <svg {...common}>
+          <rect x="6" y="4" width="12" height="16" rx="1.5" stroke={stroke} strokeWidth={sw} />
+          <path d="M9 8h6M9 11h6M9 14h4" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+          <path d="M8 4V3.5A1.5 1.5 0 019.5 2h5A1.5 1.5 0 0116 3.5V4" stroke={stroke} strokeWidth={sw} />
+        </svg>
+      );
     case "mcp":
       return (
         <svg {...common}>
