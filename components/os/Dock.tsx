@@ -12,6 +12,7 @@ const DOCK_APPS: AppId[] = [
   "demo",
   "brand",
   "bepro",
+  "docs",
   "mcp",
   "pricing",
   "faq",
@@ -19,8 +20,8 @@ const DOCK_APPS: AppId[] = [
   "about",
 ];
 
-const MOBILE_PRIMARY: AppId[] = ["demo", "brand", "bepro", "pricing", "faq"];
-const MOBILE_MORE: AppId[] = ["mcp", "how", "about"];
+const MOBILE_PRIMARY: AppId[] = ["demo", "brand", "bepro", "docs", "pricing"];
+const MOBILE_MORE: AppId[] = ["faq", "mcp", "how", "about"];
 
 const BASE_FULL = 48;
 const BASE_COMPACT = 40;

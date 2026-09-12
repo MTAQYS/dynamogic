@@ -50,6 +50,19 @@ export function AppIcon({ id, size = 22, className = "" }: Props) {
           <path d="M8 4V3.5A1.5 1.5 0 019.5 2h5A1.5 1.5 0 0116 3.5V4" stroke={stroke} strokeWidth={sw} />
         </svg>
       );
+    case "docs":
+      return (
+        <svg {...common}>
+          <rect x="5" y="3" width="14" height="18" rx="2" stroke={stroke} strokeWidth={sw} />
+          <path
+            d="M8.5 7.5v5M11.5 7.5v5M8 9h4M8 11h4"
+            stroke={stroke}
+            strokeWidth={sw}
+            strokeLinecap="round"
+          />
+          <path d="M8 15h8M8 18h5.5" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+        </svg>
+      );
     case "mcp":
       return (
         <svg {...common}>

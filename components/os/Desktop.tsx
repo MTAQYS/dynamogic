@@ -13,6 +13,7 @@ import { WindowProvider, useWindows } from "./WindowContext";
 import { OsWindow } from "./Window";
 import { AboutApp } from "./apps/AboutApp";
 import { BeProApp } from "./apps/BeProApp";
+import { DocsApp } from "./apps/DocsApp";
 import { BrandKitApp } from "./apps/BrandKitApp";
 import { DemoApp } from "./apps/DemoApp";
 import { FaqApp } from "./apps/FaqApp";
@@ -30,6 +31,8 @@ function AppContent({ id }: { id: AppId }) {
       return <BrandKitApp />;
     case "bepro":
       return <BeProApp />;
+    case "docs":
+      return <DocsApp />;
     case "mcp":
       return <McpTerminalApp />;
     case "pricing":

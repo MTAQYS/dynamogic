@@ -5,7 +5,7 @@ import { AppIcon } from "./AppIcon";
 import { useWindows } from "./WindowContext";
 import { APP_META, type AppId } from "./types";
 
-const ICONS: AppId[] = ["demo", "brand", "bepro", "mcp", "pricing", "faq", "about"];
+const ICONS: AppId[] = ["demo", "brand", "bepro", "docs", "mcp", "pricing", "faq", "about"];
 
 export function DesktopIcons() {
   const { openApp, isMobile } = useWindows();
