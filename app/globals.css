@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #fafaf8;
+  --bg-muted: #f4f3f0;
+  --bg-paper: #ffffff;
+  --fg: #1a1a1a;
+  --fg-muted: #5c5c58;
+  --border: #eae9e4;
+  --border-strong: #2a2a28;
+  --invert-bg: #2a2a28;
+  --invert-fg: #fafaf8;
+  --focus: #1a1a1a;
+  --danger: #b91c1c;
+  --success: #166534;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: #2a2a28;
+  color: #f7f6f3;
+}
+
+.prose-demo textarea {
+  font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.site-wrap {
+  @apply mx-auto max-w-6xl px-5 sm:px-8;
+}
+
+.section-pad {
+  @apply py-24 sm:py-32;
+}
+
+.display {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+.display-xl {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+}
+
+.fog-layer {
+  background:
+    radial-gradient(
+      ellipse 85% 65% at 50% 40%,
+      transparent 0%,
+      rgba(42, 42, 40, 0.009) 50%,
+      rgba(42, 42, 40, 0.042) 100%
+    ),
+    radial-gradient(
+      ellipse 50% 40% at 80% 90%,
+      rgba(42, 42, 40, 0.024) 0%,
+      transparent 70%
+    );
+}
+
+/* Soft charcoal CTA — Linear/Apple feel */
+.btn-soft {
+  @apply bg-[#2A2A28] text-invert-fg transition-all duration-200;
+  box-shadow: 0 1px 2px rgba(42, 42, 40, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.btn-soft:hover {
+  background-color: #3a3a36;
+}
+.btn-soft:active {
+  background-color: #222220;
+  transform: translateY(0.5px);
+}
+
+.app-pad {
+  @apply p-5 sm:p-6;
+}
+
+.app-kicker {
+  @apply font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-fg-muted;
+}
+
+.app-title {
+  @apply mt-1.5 text-[1.25rem] font-semibold tracking-tight text-fg;
+}
+
+.app-empty {
+  @apply flex flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-border/80 bg-bg-muted/40 px-6 py-10 text-center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

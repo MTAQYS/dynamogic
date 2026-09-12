@@ -2,15 +2,29 @@
 
 **For:** DIY founder or freelance designer  
 **Brand:** Dynamogic · **Org:** MTAQYS  
-**Product UI:** Monochrome minimal — logo must work **black on white** and **white on black**.
+**Locked mark:** **M2h** — horizontal peregrine falcon silhouette + Dynamogic wordmark  
+**Product UI:** Soft charcoal only (`#1C1C1C`) — logo must work **charcoal on light** and **light on charcoal**.
+
+---
+
+## Locked assets (repo)
+
+| File | Role |
+|------|------|
+| `public/logo-mark.svg` | Falcon head/body silhouette only |
+| `public/logo-lockup.svg` | Horizontal mark + “Dynamogic” wordmark |
+| `public/brand/logo-m2h.png` | Source M2h reference PNG |
+| `public/favicon.svg` / `icon-*.png` | App / favicon crops of the mark |
+
+React usage: `components/Logo.tsx` (`variant="lockup" | "mark"`, `size`, `invert`).
 
 ---
 
 ## Concept
 
-- **Wordmark-first.** Name is distinctive; icon optional and secondary.
-- Feel: precise, calm, modern — “brand layer” / print-adjacent, not playful sticker or neon SaaS gradient.
-- Optional mark: abstract **D** formed by a page corner + thin accent rule (accent used only when color is allowed on PDF demos — default mark is still mono).
+- **M2h lockup.** Streamlined peregrine falcon in flight (facing right) + geometric sans wordmark.
+- Feel: precision, speed, calm — print-adjacent brand layer, not playful sticker or neon SaaS gradient.
+- Neck gap + swept wing notches are part of the mark; keep them.
 - Avoid: robot mascots, sparkles, purple AI gradients, Canva-like rainbow.
 
 ---
@@ -20,67 +34,40 @@
 | Must | Must not |
 |------|----------|
 | Legible at 16px height | Hairline script fonts |
-| Works in single color (black or white) | Require gradients or multicolor to read |
-| Clear in favicon crop | Tiny nested details |
+| Works in single color (charcoal or inverse) | Require gradients or multicolor to read |
+| Clear in favicon crop | Tiny nested details beyond the neck gap |
 | Matches Inter-like geometric sans personality | Comic / rounded bubble letters |
 | Enough padding in lockups | Stretching or fake small-caps |
 
-**Primary lockup:** `Dynamogic` wordmark  
-**Secondary:** mark + wordmark horizontal  
-**Tertiary:** mark alone (app icon)
+**Primary lockup:** mark + `Dynamogic` wordmark horizontal (M2h)  
+**Secondary:** wordmark alone (rare)  
+**Tertiary:** mark alone (app icon / favicon)
 
 ---
 
-## Typography direction
+## Typography
 
-- Custom or licensed geometric sans close to **Inter / Satoshi / Geist**.
-- Weight: semibold for wordmark; tracking slightly tight (−1% to −2%).
-- Lowercase preferred (`dynamogic`) **or** capital D only — pick one and stay consistent with site.
+- Geometric sans close to **Inter** (site UI font).
+- Weight: bold / 700 for wordmark; tracking slightly tight (−2% to −4%).
+- Capital **D** + lowercase rest — stay consistent with site.
 
 ---
 
 ## Color
 
-- Default exports: **#0A0A0A** on transparent / white; **#FAFAFA** on black.
+- Default exports: **#1C1C1C** on transparent / light; **#F7F6F3** on charcoal.
 - No forced brand purple. User brand colors appear in **PDFs**, not in the Dynamogic logo.
-
----
-
-## Export sizes & formats
-
-| Asset | Format | Spec |
-|-------|--------|------|
-| Master wordmark | **SVG** | Outlined or with font subset; transparent BG |
-| Master mark | **SVG** | |
-| Favicon | **SVG** + **PNG** 32, 48 | Simple mark |
-| Apple touch | **PNG** 180×180 | |
-| PWA icons | **PNG** 192, 512 | |
-| OG image | **PNG** 1200×630 | Wordmark + tagline “Brand layer for AI output” on `#FFFFFF` or `#0A0A0A` |
-| Social avatar | **PNG** 400×400 | Mark centered |
-| PH thumbnail | **PNG** 240×240 | Per PH guidelines |
-
-Also deliver: black and white PNG variants @1x/@2x.
 
 ---
 
 ## Do
 
-- Test logo on marketing hero, favicon tab, PDF footer credit (“Made with Dynamogic” optional later), and dark footer.
-- Keep clearance = height of cap-height around mark.
-- Provide a monochrome PDF “powered by” small lockup.
+- Test logo on boot splash, menu bar, about app, dock About icon, favicon tab.
+- Keep clearance ≈ cap-height around mark.
+- Soft charcoal only in product chrome.
 
 ## Don’t
 
 - Don’t place color bars behind the wordmark on the marketing site.
 - Don’t animate the logo endlessly.
-- Don’t use photography in the logo.
-- Don’t claim trademark until filing — but use consistently.
-
----
-
-## Acceptance
-
-- [ ] SVG opens clean in browser  
-- [ ] Favicon readable in Chrome tab  
-- [ ] OG looks sharp on X/LinkedIn debugger  
-- [ ] Inverse version passes glance test on black  
+- Don’t replace M2h with alternate concepts without an explicit brand change.

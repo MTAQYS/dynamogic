@@ -2,115 +2,117 @@
 
 **Org:** MTAQYS · **Founder:** Mohamed-Taqy Salmi  
 **Product:** Dynamogic — turn AI text into branded PDFs (web demo, app, MCP, API)  
-**Budget:** $250 one-time setup, then ≤ $150/mo  
-**Stack:** Next.js · Supabase · VPS (Playwright/Puppeteer) · TypeScript MCP (`create_branded_pdf`) · Brevo · Lemon Squeezy  
+**Stack:** Next.js (App Router) · TypeScript · Tailwind · Playwright (shared PDF render path)
 
-This repository is a **founder handoff pack**: product, design, copy, tech, pricing, marketing, ads, legal checklists, ops setup, brand brief, email/social drafts, phase prompts, and atomic tasks. It is not the application source code. Hand it to Cursor or Claude Code and build phase-by-phase.
+This repository contains founder handoff docs **and** the Phase 1 marketing site + interactive demo.
 
 ---
 
-## What this repo is
+## Phase 1 (current)
+
+Marketing site + demo that produces a **real branded PDF** with no signup.
+
+- Monochrome UI chrome; brand color only inside the PDF preview
+- Shared module: `lib/render` (`createRenderJob`) — same interface for later API/MCP
+- `POST /api/demo-render` with in-memory ~3/day/IP rate limit (Redis later)
+- Free PDF footer credit: **Made with Dynamogic**
+- No auth, Supabase, Lemon Squeezy, Brevo, or MCP package in this phase
+
+### Run locally
+
+```bash
+npm install
+# Chromium for Playwright (postinstall tries this; run manually if needed)
+npx playwright install chromium
+
+npm run dev
+# open http://localhost:3000
+```
+
+Generate a PDF from the Demo section. PDFs are rendered on the Node server via Playwright.
+
+**Windows notes:** Node 20+ and `npx playwright install chromium` are required. If Chromium download fails (corporate proxy), set `PLAYWRIGHT_BROWSERS_PATH` or install system Chrome and point Playwright at it.
+
+**Vercel / production notes:** Playwright + Chromium are heavy for serverless. Phase 1 local `npm run dev` must work. For Vercel, either:
+
+1. Move Chromium to a VPS worker (`RENDER_WORKER_URL` / `RENDER_WORKER_SECRET` per `docs/04-TECH.md`), or
+2. Use a Playwright-capable host / container.
+
+Keep calling `createRenderJob` from the API route so the module interface stays shared.
+
+### Scripts
+
+| Command | Purpose |
+|---------|---------|
+| `npm run dev` | Local Next.js + demo PDF |
+| `npm run build` | Production build |
+| `npm start` | Serve production build |
+| `npm run lint` | ESLint |
+
+### Health
+
+`GET /api/health` → `{ ok: true, version, phase }`
+
+---
+
+## Handoff docs (kept)
 
 | Path | Purpose |
 |------|---------|
-| `AGENTS.md` | Non-negotiable rules for AI builders |
-| `docs/` | Product through founder ops (01–09) |
-| `brand/` | Logo / wordmark brief |
-| `content/` | Email sequences, social launch drafts, MCP tool description |
-| `prompts/` | Self-contained PHASE-1…5 prompts for Cursor/Claude |
-| `tasks/` | Atomic task master list + `issues.jsonl` for GitHub |
+| [AGENTS.md](AGENTS.md) | Non-negotiable rules for AI builders |
+| [docs/](docs/) | Product → founder ops (01–09) |
+| [brand/](brand/) | Logo / wordmark brief |
+| [content/](content/) | Email, social, MCP tool description |
+| [prompts/](prompts/) | PHASE-1…5 prompts |
+| [tasks/](tasks/) | Atomic tasks + issues.jsonl |
 
-**Competitors exist** (MDMagic, Format Magic, Claude native exports, Canva). Do **not** claim an empty category. Position as the **brand layer**: consistent kits, share links, MCP for agents, fair-use caps.
-
----
-
-## How the founder uses this
-
-1. Read `AGENTS.md` once; keep it open while building.
-2. Complete **OPS** checkboxes in `docs/09-FOUNDER-OPS.md` (accounts, DNS, Brevo, Lemon Squeezy, etc.).
-3. Run phases in order using `prompts/PHASE-N-*.md` — never skip ahead of DoD.
-4. Track work in `tasks/ATOMIC-TASKS.md`; import priority issues from `tasks/issues.jsonl`.
-5. Ship landing + demo first (Phase 1), then auth/brand kit, API/MCP, payments, launch.
+**Reading order for builders:** `AGENTS.md` → `prompts/PHASE-1-LANDING-DEMO.md` → `docs/01`–`04` (especially `03-COPY.md`).
 
 ---
 
-## How to hand to Cursor / Claude
-
-```text
-You are building Dynamogic. Read AGENTS.md and the phase prompt I paste.
-Only implement what that phase allows. One render path. One MCP tool: create_branded_pdf.
-Email = Brevo. Payments = Lemon Squeezy. No fake testimonials. No empty-category claims.
-Definition of Done is in the phase prompt and AGENTS.md.
-```
-
-Then paste **one** of:
-
-- `prompts/PHASE-1-LANDING-DEMO.md`
-- `prompts/PHASE-2-AUTH-BRAND-KIT.md`
-- `prompts/PHASE-3-API-MCP.md`
-- `prompts/PHASE-4-PAYMENTS.md`
-- `prompts/PHASE-5-LAUNCH.md`
-
-Point the agent at `docs/01`–`04` and `docs/03-COPY.md` for paste-ready UI strings.
-
----
-
-## Link map (docs)
-
-| Doc | Contents |
-|-----|----------|
-| [01-PRODUCT](docs/01-PRODUCT.md) | Users, JTBD, surfaces, brand kit, metrics, v1 refusals |
-| [02-DESIGN](docs/02-DESIGN.md) | Palette, type, motion, hero, a11y |
-| [03-COPY](docs/03-COPY.md) | Final UI/marketing copy + banned claims |
-| [04-TECH](docs/04-TECH.md) | Architecture, data model, API, MCP, env, deploy |
-| [05-PRICING](docs/05-PRICING.md) | Tiers, fair-use, Lemon Squeezy checklist |
-| [06-MARKETING](docs/06-MARKETING.md) | Channels, launch playbooks, 30-day calendar |
-| [07-ADS](docs/07-ADS.md) | $250 / $150 budget, creatives, kill rules |
-| [08-LEGAL](docs/08-LEGAL.md) | Privacy/ToS checklist (not lawyer text) |
-| [09-FOUNDER-OPS](docs/09-FOUNDER-OPS.md) | Every human setup checkbox + signup URLs |
-
-Supporting: [LOGO-BRIEF](brand/LOGO-BRIEF.md) · [email-sequences](content/email-sequences.md) · [social-launch](content/social-launch.md) · [mcp-tool-description](content/mcp-tool-description.md)
-
----
-
-## Design & brand stance
+## Design stance
 
 - **Monochrome minimal** UI; color only inside brand demos / user brand kits.
-- Wordmark must work black-on-white and white-on-black.
-- Site copy is calm, specific, and honest about competitors.
+- Primary CTAs are solid black — never brand purple/blue on buttons.
+- Copy from `docs/03-COPY.md`. No fake testimonials. No empty-category claims.
 
 ---
 
-## Pricing snapshot
+## Later phases
 
-| Tier | Price | Notes |
-|------|-------|-------|
-| Free | $0 | 3 PDFs/day |
-| Pro | $12/mo or $99/yr | Higher caps (see 05-PRICING) |
-| Founding | $79 / 12 months **or** $149 lifetime | Cap 100 PDFs/mo; **max 50** founding seats |
+| Phase | Prompt | Outcome |
+|-------|--------|---------|
+| 2 | `prompts/PHASE-2-AUTH-BRAND-KIT.md` | Auth + brand kit CRUD |
+| 3 | `prompts/PHASE-3-API-MCP.md` | HTTP API + `create_branded_pdf` |
+| 4 | `prompts/PHASE-4-PAYMENTS.md` | Lemon Squeezy + quotas |
+| 5 | `prompts/PHASE-5-LAUNCH.md` | Legal, analytics, launch |
 
-Payments: **Lemon Squeezy** preferred. Email: **Brevo** (not Resend).
-
----
-
-## Phases (order is mandatory)
-
-1. Landing + interactive demo (one render path)  
-2. Auth + Brand Kit  
-3. API + MCP (`create_branded_pdf` only)  
-4. Payments (Lemon Squeezy) + quotas  
-5. Launch polish, legal pages, analytics, launch assets  
-
-Rules, DoD, and constraints: **`AGENTS.md`**.
+Competitors exist (MDMagic, Format Magic, Claude native exports, Canva). Position as the **brand layer**, not a category exclusive.
 
 ---
 
-## Repo hygiene
+## GitHub Pages preview (UI only)
 
-- No secrets in git. Env templates only in `docs/04-TECH.md`.
-- Application code lives in a separate app repo (or sibling folder); this pack stays documentation + prompts + tasks.
-- When creating GitHub issues: use `tasks/issues.jsonl` as seed.
+Static marketing export for public UI review (demo uses a sample PDF — no Playwright on Pages):
 
----
+```bash
+npm run build:pages
+# outputs ./out with basePath /dynamogic
+```
 
-*MTAQYS · Dynamogic handoff · Keep phases ordered · One tool · One render path.*
+Workflows:
+
+- `.github/workflows/pages.yml` — official Actions Pages deploy
+- `.github/workflows/gh-pages-branch.yml` — pushes `out/` to `gh-pages` via peaceiris
+
+**Expected URL:** https://mtaqys.github.io/dynamogic/
+
+**Private repo note:** GitHub Pages for private repositories requires GitHub Pro / Team / Enterprise (or a public repo). Founder: Settings → Pages → Source = GitHub Actions (or `gh-pages` branch). If Pages is blocked on private, either enable org billing or temporarily make the repo public for the preview.
+
+Local static preview:
+
+```bash
+npm run build:pages
+npx serve out
+# open http://localhost:3000/dynamogic/
+```

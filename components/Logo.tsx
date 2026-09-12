@@ -1,0 +1,96 @@
+type Variant = "lockup" | "mark";
+
+type Props = {
+  className?: string;
+  /** lockup = falcon + Dynamogic wordmark; mark = falcon only */
+  variant?: Variant;
+  /** Height in px for lockup/mark. For square mark icons, prefer `size` as the box edge. */
+  size?: number;
+  /** When true with variant=mark, fit falcon inside a size×size box (dock / desktop icons). */
+  square?: boolean;
+  invert?: boolean;
+};
+
+/** M2h falcon silhouette path (body + head), viewBox 0 0 128.01 64 */
+const FALCON_D =
+  "M37.06,63.27 L43.96,54.17 C45.81,52.34 51.60,49.14 51.83,48.63 L45.84,50.10 C43.25,51.15 36.75,56.17 31.11,57.05 C25.47,57.93 -1.29,60.02 0.73,57.15 L47.27,34.03 L40.16,27.40 L65.35,35.45 L29.75,20.45 C23.79,17.57 20.89,14.86 17.68,12.40 C14.47,9.93 -3.03,0.23 4.08,0.73 L74.57,16.42 C84.44,18.80 81.26,18.85 83.11,19.72 C84.95,20.59 87.61,22.12 89.29,23.38 C90.97,24.63 95.27,28.45 96.54,29.79 C97.80,31.13 98.94,33.19 99.40,34.10 C99.85,35.02 100.39,36.00 100.20,37.07 C100.00,38.15 98.66,41.56 97.87,42.72 C97.08,43.87 95.27,45.41 93.88,46.35 C92.48,47.29 88.68,49.41 86.69,50.24 C84.69,51.08 82.26,52.17 77.93,53.02 C73.61,53.87 57.10,55.86 52.09,57.05 C47.08,58.24 39.74,61.76 37.86,62.54 C35.98,63.31 36.30,64.31 37.06,63.27 Z M107.33,43.14 C107.18,43.14 106.54,42.92 106.57,42.81 L107.52,42.22 C109.11,41.34 118.62,36.85 119.29,35.82 L112.83,34.00 C110.67,33.59 104.65,33.92 102.02,32.53 C99.40,31.13 91.20,23.83 91.82,22.87 L106.96,24.84 C109.74,25.32 112.39,26.05 114.02,26.67 C115.64,27.29 118.50,28.72 119.94,29.77 C121.39,30.81 124.66,33.86 125.58,35.03 C126.49,36.20 127.14,38.22 127.28,39.13 C127.41,40.05 126.91,42.15 126.65,42.33 L125.19,40.58 C124.46,40.22 123.02,39.20 120.84,39.48 C118.66,39.75 109.47,42.32 107.78,42.77 C106.09,43.23 107.48,43.13 107.33,43.14 Z";
+
+const MARK_VB = { w: 128.01, h: 64 };
+
+function FalconMark({
+  height,
+  width,
+  fill,
+  className = "",
+}: {
+  height: number;
+  width?: number;
+  fill: string;
+  className?: string;
+}) {
+  const w = width ?? (height * MARK_VB.w) / MARK_VB.h;
+  return (
+    <svg
+      width={w}
+      height={height}
+      viewBox={`0 0 ${MARK_VB.w} ${MARK_VB.h}`}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      className={className}
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <path fill={fill} d={FALCON_D} />
+    </svg>
+  );
+}
+
+/** M2h lockup — peregrine falcon mark + Dynamogic wordmark. Soft charcoal only. */
+export function Logo({
+  className = "",
+  variant = "lockup",
+  size,
+  square = false,
+  invert = false,
+}: Props) {
+  const fg = invert ? "#F7F6F3" : "#1C1C1C";
+
+  if (variant === "mark") {
+    if (square) {
+      const box = size ?? 22;
+      // Fit falcon width inside square; height follows aspect
+      const markW = box;
+      const markH = (box * MARK_VB.h) / MARK_VB.w;
+      return (
+        <span
+          className={`inline-flex items-center justify-center ${className}`}
+          style={{ width: box, height: box }}
+          aria-hidden
+        >
+          <FalconMark width={markW} height={markH} fill={fg} />
+        </span>
+      );
+    }
+    const markH = size ?? 22;
+    return (
+      <span className={`inline-flex items-center ${className}`} aria-hidden>
+        <FalconMark height={markH} fill={fg} />
+      </span>
+    );
+  }
+
+  const markH = size ?? 18;
+  const textPx = Math.round(markH * 1.05 * 10) / 10;
+
+  return (
+    <span className={`inline-flex items-center gap-2.5 ${className}`}>
+      <FalconMark height={markH} fill={fg} />
+      <span
+        className="font-bold leading-none tracking-tight"
+        style={{ color: fg, fontSize: `${textPx}px` }}
+      >
+        Dynamogic
+      </span>
+    </span>
+  );
+}
